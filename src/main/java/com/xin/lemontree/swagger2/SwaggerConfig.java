@@ -2,9 +2,6 @@ package com.xin.lemontree.swagger2;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -18,7 +15,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @author creator mafh 2017/12/18 16:08
  * @author updater mafh
  * @version 1.0.0
- * @description
  */
 @Configuration
 @EnableSwagger2
@@ -32,7 +28,7 @@ public class SwaggerConfig {
      */
 //    @Override
 //    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("/swagger/index.html").addResourceLocations("classpath:/META-INF/resources/");
+//        registry.addResourceHandler("/swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
 //        registry.addResourceHandler("/webjars/**")
 //                .addResourceLocations("classpath:/META-INF/resources/webjars/");
 //    }
@@ -48,8 +44,8 @@ public class SwaggerConfig {
     }
     private ApiInfo apiInfo(){
         return new ApiInfoBuilder()
-                .title("使用Swagger2构建RESTful APIS")
-                .description("更多内容描述敬请期待http://www.mafh.xin:8088/")
+                .title("你好阳光！")
+                .description("群处守口，独处守心。")
                 .termsOfServiceUrl("http://www.mafh.xin:8088/")
                 .contact(new Contact("mafh","http://www.mafh.xin:8088/","necrodriver@foxmail.com"))
                 .version("1.0")
