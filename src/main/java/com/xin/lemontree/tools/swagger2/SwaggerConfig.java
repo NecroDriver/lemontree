@@ -1,4 +1,4 @@
-package com.xin.lemontree.swagger2;
+package com.xin.lemontree.tools.swagger2;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,17 +24,15 @@ public class SwaggerConfig {
      * SpringBoot默认已经将classpath:/META-INF/resources/和classpath:/META-INF/resources/webjars/映射
      * 所以该方法不需要重写，如果在SpringMVC中，需要重写定义
      * 重写该方法需要 extends WebMvcConfigurerAdapter
-     *
      */
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("/swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
-//        registry.addResourceHandler("/webjars/**")
-//                .addResourceLocations("classpath:/META-INF/resources/webjars/");
-//    }
-
+/*    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+    }*/
     @Bean
-    public Docket createRestApi(){
+    public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
@@ -42,12 +40,13 @@ public class SwaggerConfig {
                 .paths(PathSelectors.any())
                 .build();
     }
-    private ApiInfo apiInfo(){
+
+    private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("你好阳光！")
                 .description("群处守口，独处守心。")
                 .termsOfServiceUrl("http://www.mafh.xin:8088/")
-                .contact(new Contact("mafh","http://www.mafh.xin:8088/","necrodriver@foxmail.com"))
+                .contact(new Contact("mafh", "http://www.mafh.xin:8088/", "necrodriver@foxmail.com"))
                 .version("1.0")
                 .build();
     }
