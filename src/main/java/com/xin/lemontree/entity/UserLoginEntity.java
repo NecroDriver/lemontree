@@ -4,7 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * @author creator mafh 2018/1/17 17:35
@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 @Table(name = "user_login")
 @Entity
 @Data
-public class UserLogin implements Serializable{
+public class UserLoginEntity implements Serializable{
 
     /** 主键 */
     @Id
@@ -27,9 +27,9 @@ public class UserLogin implements Serializable{
     private String 	  userName;
     /** 明文密码，不持久化到数据库 */
     @Transient
-    private String 	  plainPassword;
-    /** 加密后密码 */
     private String 	  password;
+    /** 加密后密码 */
+    private String 	  encryptPassword;
     /** 盐 */
     private String 	  salt;
     /** 手机号 */
@@ -39,13 +39,13 @@ public class UserLogin implements Serializable{
     /** 平台 */
     private String 	  platform;
     /** 创建时间 */
-    private Timestamp createTime;
+    private Date createTime;
     /** 创建人 */
     private String 	  creator;
     /** 创建人ip */
     private String 	  creatorIP;
     /** 修改时间 */
-    private Timestamp modifyTime;
+    private Date modifyTime;
     /** 修改人 */
     private String 	  modifier;
     /** 修改人ip */
