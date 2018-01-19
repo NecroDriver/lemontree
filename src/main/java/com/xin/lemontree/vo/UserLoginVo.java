@@ -33,15 +33,17 @@ public class UserLoginVo implements Serializable{
     /** 平台 */
     private String 	  platform;
     /** 创建时间 */
-    private Date createTime;
+    private Date      createTime;
     /** 创建人 */
     private String 	  creator;
     /** 创建人ip */
     private String 	  creatorIP;
     /** 修改时间 */
-    private Date modifyTime;
+    private Date      modifyTime;
     /** 修改人 */
     private String 	  modifier;
     /** 修改人ip */
     private String 	  modifierIP;
+    /** token */
+    private String    token;
 }

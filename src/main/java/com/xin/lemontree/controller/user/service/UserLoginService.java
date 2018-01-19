@@ -37,9 +37,8 @@ public interface UserLoginService {
      * 登出
      *
      * @param token 口令
-     * @return 结果
      */
-    Integer loginout(String token);
+    void loginout(String token);
 
     /**
      * 根据口令获取用户信息

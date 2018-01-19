@@ -1,5 +1,7 @@
 package com.xin.lemontree.common;
 
+import com.xin.lemontree.tools.properties.PropertiesUtils;
+
 /**
  * @author creator mafh 2018/1/18 18:08
  * @author updater mafh
@@ -8,7 +10,10 @@ package com.xin.lemontree.common;
  */
 public class SysConfig {
 
-
+    /** redis key前缀 */
+    public static String REDIS_USER_SESSION_KEY;
+    /** redis 有效时间 */
+    public static Integer SSO_SESSION_EXPIRE;
 
     static{
         loadFromProp();
@@ -18,6 +23,9 @@ public class SysConfig {
      * 读取配置文件信息
      */
     public static void loadFromProp(){
-
+        PropertiesUtils propertiesUtils = new PropertiesUtils("application.properties");
+        REDIS_USER_SESSION_KEY = propertiesUtils.getString("REDIS_USER_SESSION_KEY");
+        SSO_SESSION_EXPIRE = propertiesUtils.getInteger("SSO_SESSION_EXPIRE");
+        propertiesUtils.close();
     }
 }
