@@ -37,21 +37,22 @@ public class UserLoginServiceImpl implements UserLoginService {
     /** 字符串redis模板 */
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
     /**
      * 注册用户
      *
-     * @param account  账户
-     * @param userName 昵称
-     * @param password 密码
-     * @param salt     盐
-     * @param email    邮箱
-     * @param phone    手机
-     * @param platform 平台
+     * @param userLoginEntity  账户实体
      * @return 结果
      */
     @Override
-    public Integer registerUser(String account, String userName, String password, String salt, String email, String phone, String platform) {
-        return null;
+    public Integer registerUser(UserLoginEntity userLoginEntity) {
+
+        // 验证用户名是否重复
+        if(null != userLoginDao.findByAccount(userLoginEntity.getAccount())){
+            Assert.notNull(null, "该用户名已存在！");
+        }
+        userLoginDao.save(userLoginEntity);
+        return userLoginEntity.getId();
     }
 
     /**
