@@ -35,9 +35,14 @@ public class UserLoginServiceImplTest {
 
     @Test
     public void loginout() {
+        String token = "afb63d57-f6ee-4df9-913a-e6282813149a";
+        userLoginService.loginout(token);
     }
 
     @Test
     public void queryUserByToken() {
+        String token = "afb63d57-f6ee-4df9-913a-e6282813149a";
+        UserLoginVo userLoginVo = userLoginService.queryUserByToken(token);
+        System.out.println(userLoginVo);
     }
 }

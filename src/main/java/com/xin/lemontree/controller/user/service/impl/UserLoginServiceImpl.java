@@ -9,10 +9,12 @@ import com.xin.lemontree.tools.json.JsonUtils;
 import com.xin.lemontree.vo.UserLoginVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.DigestUtils;
+import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.util.UUID;
@@ -31,9 +33,10 @@ public class UserLoginServiceImpl implements UserLoginService {
     /** 用户登录dao */
     @Autowired
     private UserLoginDao userLoginDao;
-    /** redis模板 */
+
+    /** 字符串redis模板 */
     @Autowired
-    private RedisTemplate redisTemplate;
+    private StringRedisTemplate stringRedisTemplate;
     /**
      * 注册用户
      *
@@ -63,10 +66,11 @@ public class UserLoginServiceImpl implements UserLoginService {
 
         UserLoginEntity userLoginEntity = userLoginDao.findByAccount(account);
         String salt = userLoginEntity.getSalt();
+        String enPassword = userLoginEntity.getEncryptPassword();
         String encryptPassword = DigestUtils.md5DigestAsHex((password + salt).getBytes());
         // 判断账号密码是否正确
-        if(!userLoginEntity.getEncryptPassword().equals(encryptPassword)){
-            Assert.isNull(null,"账号名或密码错误");
+        if(!enPassword.equals(encryptPassword)){
+            Assert.notNull(null,"账号名或密码错误");
         }
         // 生成token
         String token = UUID.randomUUID().toString();
@@ -74,7 +78,7 @@ public class UserLoginServiceImpl implements UserLoginService {
         userLoginEntity.setEncryptPassword(null);
         userLoginEntity.setSalt(null);
         // 把用户信息写入redis
-        ValueOperations<String, String> operations = redisTemplate.opsForValue();
+        ValueOperations<String, String> operations = stringRedisTemplate.opsForValue();
         operations.set(SysConfig.REDIS_USER_SESSION_KEY + token, JsonUtils.objectToJson(userLoginEntity));
         // 设置过期时间
         operations.getOperations().expire(SysConfig.REDIS_USER_SESSION_KEY + token, SysConfig.SSO_SESSION_EXPIRE, TimeUnit.SECONDS);
@@ -84,7 +88,7 @@ public class UserLoginServiceImpl implements UserLoginService {
         // 将entity转成vo
         UserLoginVo userLoginVo =  ConvertUtils.convert(userLoginEntity, UserLoginVo.class);
         // user 已经是持久化对象了，被保存在了session缓存当中，若user又重新修改了属性值，那么在提交事务时，此时 hibernate对象就会拿当前这个user对象和保存在session缓存中的user对象进行比较，如果两个对象相同，则不会发送update语句，否则，如果两个对象不同，则会发出update语句。
-        userLoginEntity.setEncryptPassword(encryptPassword);
+        userLoginEntity.setEncryptPassword(enPassword);
         userLoginEntity.setSalt(salt);
         // 将token放置于userLoginVo中
         userLoginVo.setToken(token);
@@ -100,7 +104,7 @@ public class UserLoginServiceImpl implements UserLoginService {
      */
     @Override
     public void loginout(String token) {
-        ValueOperations<String, String> operations = redisTemplate.opsForValue();
+        ValueOperations<String, String> operations = stringRedisTemplate.opsForValue();
         operations.getOperations().delete(SysConfig.REDIS_USER_SESSION_KEY + token);
     }
 
@@ -112,6 +116,15 @@ public class UserLoginServiceImpl implements UserLoginService {
      */
     @Override
     public UserLoginVo queryUserByToken(String token) {
+        // 从redis中获取用户信息
+        ValueOperations<String, String> operations = stringRedisTemplate.opsForValue();
+        String json = operations.get(SysConfig.REDIS_USER_SESSION_KEY + token);
+        // 判断是否为空
+        if(!StringUtils.isEmpty(json)){
+            // 不为空，更新过期时间
+            operations.getOperations().expire(SysConfig.REDIS_USER_SESSION_KEY + token, SysConfig.SSO_SESSION_EXPIRE, TimeUnit.SECONDS);
+            return JsonUtils.jsonToObject(json, UserLoginVo.class);
+        }
         return null;
     }
 }
