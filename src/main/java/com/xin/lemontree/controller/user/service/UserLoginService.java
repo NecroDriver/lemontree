@@ -1,6 +1,5 @@
 package com.xin.lemontree.controller.user.service;
 
-import com.xin.lemontree.entity.UserLoginEntity;
 import com.xin.lemontree.vo.UserLoginVo;
 
 /**
@@ -14,10 +13,14 @@ public interface UserLoginService {
     /**
      * 注册用户
      *
-     * @param userLoginEntity  账户实体
+     * @param account
+     * @param userName
+     * @param password
+     * @param phone
+     * @param email
      * @return 结果
      */
-    Integer registerUser(UserLoginEntity userLoginEntity);
+    Integer registerUser(String account, String userName, String password, String phone, String email);
 
     /**
      * 用户登录

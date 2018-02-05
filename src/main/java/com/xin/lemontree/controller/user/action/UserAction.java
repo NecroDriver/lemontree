@@ -1,7 +1,6 @@
 package com.xin.lemontree.controller.user.action;
 
 import com.xin.lemontree.controller.user.service.UserLoginService;
-import com.xin.lemontree.entity.UserLoginEntity;
 import com.xin.lemontree.vo.ResultVo;
 import com.xin.lemontree.vo.UserLoginVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +26,9 @@ public class UserAction {
     private UserLoginService userLoginService;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResultVo register(UserLoginEntity userLoginEntity) {
-        return new ResultVo(true, userLoginEntity);
+    public ResultVo register(String account, String userName, String password, String phone, String email) {
+        Integer id = userLoginService.registerUser(account, userName, password, phone, email);
+        return ResultVo.newResultVo(true, "注册成功！", id);
     }
 
     /**
