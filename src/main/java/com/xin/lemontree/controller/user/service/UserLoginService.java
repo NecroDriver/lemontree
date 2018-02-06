@@ -2,6 +2,9 @@ package com.xin.lemontree.controller.user.service;
 
 import com.xin.lemontree.vo.UserLoginVo;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * @author creator mafh 2018/1/18 14:40
  * @author updater mafh
@@ -25,11 +28,13 @@ public interface UserLoginService {
     /**
      * 用户登录
      *
+     * @param request  请求
+     * @param response  响应
      * @param account  账户
      * @param password 密码
      * @return 数据
      */
-    UserLoginVo login(String account, String password);
+    UserLoginVo login(HttpServletRequest request, HttpServletResponse response, String account, String password);
 
     /**
      * 登出

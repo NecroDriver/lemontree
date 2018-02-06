@@ -5,6 +5,7 @@ import com.xin.lemontree.controller.user.service.UserLoginService;
 import com.xin.lemontree.dao.UserLoginDao;
 import com.xin.lemontree.entity.UserLoginEntity;
 import com.xin.lemontree.tools.Convert.ConvertUtils;
+import com.xin.lemontree.tools.cookie.CookieUtils;
 import com.xin.lemontree.tools.json.JsonUtils;
 import com.xin.lemontree.vo.UserLoginVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.UUID;
@@ -80,12 +83,14 @@ public class UserLoginServiceImpl implements UserLoginService {
     /**
      * 用户登录
      *
+     * @param request  请求
+     * @param response 响应
      * @param account  账户
      * @param password 密码
      * @return 数据
      */
     @Override
-    public UserLoginVo login(String account, String password) {
+    public UserLoginVo login(HttpServletRequest request, HttpServletResponse response, String account, String password) {
 
         UserLoginEntity userLoginEntity = userLoginDao.findByAccount(account);
         String salt = userLoginEntity.getSalt();
@@ -106,7 +111,7 @@ public class UserLoginServiceImpl implements UserLoginService {
         // 设置过期时间
         operations.getOperations().expire(SysConfig.REDIS_USER_SESSION_KEY + token, SysConfig.SSO_SESSION_EXPIRE, TimeUnit.SECONDS);
         // 添加写 cookie 的逻辑，cookie 的有效期是关闭浏览器就失效。
-        // TODO
+        CookieUtils.setCookie(request, response, "USER_TOKEN", token);
 
         // 将entity转成vo
         UserLoginVo userLoginVo = ConvertUtils.convert(userLoginEntity, UserLoginVo.class);
@@ -116,7 +121,7 @@ public class UserLoginServiceImpl implements UserLoginService {
         // 将token放置于userLoginVo中
         userLoginVo.setToken(token);
 
-        /********************************************************* 结果返回 ************************************************************/
+        /*------------------------------------------------------ 结果返回 --------------------------------------------------*/
         return userLoginVo;
     }
 

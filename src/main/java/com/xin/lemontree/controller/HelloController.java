@@ -1,8 +1,9 @@
 package com.xin.lemontree.controller;
 
+
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author creator mafh 2017/12/18 13:53
@@ -10,16 +11,26 @@ import org.springframework.web.bind.annotation.RestController;
  * @version 1.0.0
  * @description
  */
-@RestController
+@Controller
 public class HelloController {
 
-    @RequestMapping(value = "/hello", method = RequestMethod.GET)
-    public String say() {
-        return "hello world!";
+    /**
+     * 初始化登录页面
+     *
+     * @return 视图
+     */
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login() {
+        return "login";
     }
 
-    @RequestMapping(value = "/call", method = RequestMethod.POST)
-    public String call() {
-        return "call world! this is spring boot. I'm test jrebel.";
+    /**
+     * 主视图
+     *
+     * @return
+     */
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    public String index() {
+        return "index";
     }
 }

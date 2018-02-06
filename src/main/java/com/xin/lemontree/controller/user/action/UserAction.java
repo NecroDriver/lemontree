@@ -4,10 +4,10 @@ import com.xin.lemontree.controller.user.service.UserLoginService;
 import com.xin.lemontree.vo.ResultVo;
 import com.xin.lemontree.vo.UserLoginVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author creator mafh 2018/1/17 17:17
@@ -24,6 +24,24 @@ public class UserAction {
      */
     @Autowired
     private UserLoginService userLoginService;
+
+    private HttpServletRequest request;
+
+    private HttpServletResponse response;
+
+    /**
+     * 说明：ModelAttribute的作用
+     * 1)放置在形参上，表示引用model中的数据
+     * 2）放置在方法上面：表示请求该类的每个Action前都会首先执行它，也可以将一些准备数据的操作放置在该方法里面。
+     *
+     * @param request
+     * @param response
+     */
+    @ModelAttribute
+    public void setReqAndRes(HttpServletRequest request, HttpServletResponse response) {
+        this.request = request;
+        this.response = response;
+    }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResultVo register(String account, String userName, String password, String phone, String email) {
