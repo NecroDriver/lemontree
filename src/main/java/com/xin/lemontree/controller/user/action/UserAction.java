@@ -58,7 +58,7 @@ public class UserAction {
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResultVo login(String account, String password) {
-        UserLoginVo userLoginVo = userLoginService.login(account, password);
+        UserLoginVo userLoginVo = userLoginService.login(request, response, account, password);
         return ResultVo.newResultVo(true, "登录成功！", userLoginVo);
     }
 

@@ -4,7 +4,7 @@ import com.xin.lemontree.common.SysConfig;
 import com.xin.lemontree.controller.user.service.UserLoginService;
 import com.xin.lemontree.dao.UserLoginDao;
 import com.xin.lemontree.entity.UserLoginEntity;
-import com.xin.lemontree.tools.Convert.ConvertUtils;
+import com.xin.lemontree.tools.convert.ConvertUtils;
 import com.xin.lemontree.tools.cookie.CookieUtils;
 import com.xin.lemontree.tools.json.JsonUtils;
 import com.xin.lemontree.vo.UserLoginVo;
@@ -48,19 +48,17 @@ public class UserLoginServiceImpl implements UserLoginService {
     /**
      * 注册用户
      *
-     * @param account
-     * @param userName
-     * @param password
-     * @param phone
-     * @param email
+     * @param account  账号
+     * @param userName 用户名
+     * @param password 密码
+     * @param phone    手机
+     * @param email    邮件
      * @return 结果
      */
     @Override
     public Integer registerUser(String account, String userName, String password, String phone, String email) {
         // 验证用户名是否重复
-        if (null != userLoginDao.findByAccount(account)) {
-            Assert.notNull(null, "该用户名已存在！");
-        }
+        Assert.isNull(userLoginDao.findByAccount(account), "该用户名已存在！");
         // 生成对象
         UserLoginEntity userLoginEntity = new UserLoginEntity();
         userLoginEntity.setAccount(account);
@@ -93,13 +91,12 @@ public class UserLoginServiceImpl implements UserLoginService {
     public UserLoginVo login(HttpServletRequest request, HttpServletResponse response, String account, String password) {
 
         UserLoginEntity userLoginEntity = userLoginDao.findByAccount(account);
+        Assert.notNull(userLoginEntity, "未查询到该账户");
         String salt = userLoginEntity.getSalt();
         String enPassword = userLoginEntity.getEncryptPassword();
         String encryptPassword = DigestUtils.md5DigestAsHex((password + salt).getBytes());
         // 判断账号密码是否正确
-        if (!enPassword.equals(encryptPassword)) {
-            Assert.notNull(null, "账号名或密码错误");
-        }
+        Assert.isTrue(enPassword.equals(encryptPassword), "账号名或密码错误");
         // 生成token
         String token = UUID.randomUUID().toString();
         // 清空密码和盐避免泄露
@@ -118,6 +115,7 @@ public class UserLoginServiceImpl implements UserLoginService {
         // user 已经是持久化对象了，被保存在了session缓存当中，若user又重新修改了属性值，那么在提交事务时，此时 hibernate对象就会拿当前这个user对象和保存在session缓存中的user对象进行比较，如果两个对象相同，则不会发送update语句，否则，如果两个对象不同，则会发出update语句。
         userLoginEntity.setEncryptPassword(enPassword);
         userLoginEntity.setSalt(salt);
+        Assert.notNull(userLoginVo, "vo转换错误");
         // 将token放置于userLoginVo中
         userLoginVo.setToken(token);
 
@@ -139,7 +137,7 @@ public class UserLoginServiceImpl implements UserLoginService {
     /**
      * 根据口令获取用户信息
      *
-     * @param token
+     * @param token 口令
      * @return 数据
      */
     @Override

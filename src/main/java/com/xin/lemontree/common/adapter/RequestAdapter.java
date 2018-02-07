@@ -26,6 +26,7 @@ public class RequestAdapter extends WebMvcConfigurerAdapter {
                 .excludePathPatterns("/swagger-resources/**")
                 // 登录不做拦截
                 .excludePathPatterns("/login")
-                .excludePathPatterns("/user/login");
+                .excludePathPatterns("/user/**");
+        super.addInterceptors(registry);
     }
 }

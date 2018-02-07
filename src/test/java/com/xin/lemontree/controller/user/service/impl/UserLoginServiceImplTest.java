@@ -29,8 +29,8 @@ public class UserLoginServiceImplTest {
 
     @Test
     public void login() {
-        UserLoginVo userLoginVo = userLoginService.login("NecroDriver","1111111");
-        System.out.println(userLoginVo);
+//        UserLoginVo userLoginVo = userLoginService.login("NecroDriver","1111111");
+//        System.out.println(userLoginVo);
     }
 
     @Test
