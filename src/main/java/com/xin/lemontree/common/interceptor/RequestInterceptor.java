@@ -1,6 +1,6 @@
 package com.xin.lemontree.common.interceptor;
 
-import com.xin.lemontree.common.SysConfig;
+import com.xin.lemontree.common.consts.SysConfig;
 import com.xin.lemontree.controller.user.service.UserLoginService;
 import com.xin.lemontree.tools.cookie.CookieUtils;
 import com.xin.lemontree.vo.UserLoginVo;
@@ -26,8 +26,12 @@ public class RequestInterceptor implements HandlerInterceptor {
     /**
      * 用户登录service
      */
-    @Autowired
     private UserLoginService userLoginService;
+
+    @Autowired
+    public RequestInterceptor(UserLoginService userLoginService) {
+        this.userLoginService = userLoginService;
+    }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {

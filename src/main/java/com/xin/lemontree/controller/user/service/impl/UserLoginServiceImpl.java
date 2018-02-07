@@ -1,6 +1,6 @@
 package com.xin.lemontree.controller.user.service.impl;
 
-import com.xin.lemontree.common.SysConfig;
+import com.xin.lemontree.common.consts.SysConfig;
 import com.xin.lemontree.controller.user.service.UserLoginService;
 import com.xin.lemontree.dao.UserLoginDao;
 import com.xin.lemontree.entity.UserLoginEntity;

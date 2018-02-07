@@ -1,4 +1,4 @@
-package com.xin.lemontree.common;
+package com.xin.lemontree.common.consts;
 
 import com.xin.lemontree.tools.properties.PropertiesUtils;
 

@@ -17,8 +17,12 @@ public class RequestAdapter extends WebMvcConfigurerAdapter {
     /**
      * 登录拦截器
      */
-    @Autowired
     private RequestInterceptor requestInterceptor;
+
+    @Autowired
+    public RequestAdapter(RequestInterceptor requestInterceptor) {
+        this.requestInterceptor = requestInterceptor;
+    }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -27,6 +31,5 @@ public class RequestAdapter extends WebMvcConfigurerAdapter {
                 // 登录不做拦截
                 .excludePathPatterns("/login")
                 .excludePathPatterns("/user/**");
-        super.addInterceptors(registry);
     }
 }
