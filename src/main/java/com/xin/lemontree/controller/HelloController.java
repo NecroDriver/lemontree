@@ -27,10 +27,20 @@ public class HelloController {
     /**
      * 主视图
      *
-     * @return
+     * @return view
      */
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String index() {
         return "index";
+    }
+
+    /**
+     * websocket
+     *
+     * @return view
+     */
+    @RequestMapping(value = "/websocket", method = RequestMethod.GET)
+    public String websocket() {
+        return "websocket";
     }
 }
