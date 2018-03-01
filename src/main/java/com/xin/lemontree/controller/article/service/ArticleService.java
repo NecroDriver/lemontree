@@ -1,4 +1,4 @@
-package com.xin.lemontree.controller.article;
+package com.xin.lemontree.controller.article.service;
 
 import com.xin.lemontree.entity.ArticleEntity;
 
@@ -18,5 +18,5 @@ public interface ArticleService {
      * @param stage 期号
      * @return 文章列表
      */
-    List<ArticleEntity> getListForWeek(Integer stage);
+    List<ArticleEntity> getListForWeek(Integer stage) throws Exception;
 }

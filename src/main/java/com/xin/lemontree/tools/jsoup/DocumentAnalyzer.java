@@ -11,7 +11,7 @@ import java.util.Map;
  * @version 1.0.0
  * @description 解析html文档抽象
  */
-public interface DocumentAnalyzer {
+public class DocumentAnalyzer {
 
     /**
      * 根据html文档对象获取List<Map>
@@ -19,5 +19,7 @@ public interface DocumentAnalyzer {
      * @param document html文档对象
      * @return 列表
      */
-    List<Map<String, Object>> getMapList(Document document);
+    List<Map<String, Object>> getMapList(Document document) {
+        return null;
+    }
 }
