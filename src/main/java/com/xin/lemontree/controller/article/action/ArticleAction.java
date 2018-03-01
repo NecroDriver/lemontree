@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -33,7 +35,8 @@ public class ArticleAction {
      * @return 文章列表
      * @throws Exception 异常
      */
-    @RequestMapping("/getList/stage/{stage}")
+    @RequestMapping(value = "/getList/stage/{stage}", method = RequestMethod.POST)
+    @ResponseBody
     public ResultVo getListForArticle(@PathVariable("stage") Integer stage) throws Exception {
         List<ArticleEntity> articleEntityList = articleService.getListForWeek(stage);
         return ResultVo.newResultVo(true, "抓取文章成功！", articleEntityList);

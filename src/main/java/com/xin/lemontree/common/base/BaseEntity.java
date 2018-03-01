@@ -1,5 +1,7 @@
 package com.xin.lemontree.common.base;
 
+import lombok.Data;
+
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
@@ -14,6 +16,7 @@ import java.util.Date;
  * @description Entity的所有基类，任何Entity均要继承该类
  */
 @MappedSuperclass
+@Data
 public class BaseEntity implements Serializable {
 
     /**
@@ -33,7 +36,7 @@ public class BaseEntity implements Serializable {
     /**
      * 修改时间
      */
-    @Column(name = "createTime", nullable = false)
+    @Column(name = "modifyTime", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date modifyTime;
     /**

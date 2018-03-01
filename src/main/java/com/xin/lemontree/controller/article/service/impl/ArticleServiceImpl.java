@@ -2,13 +2,14 @@ package com.xin.lemontree.controller.article.service.impl;
 
 import com.xin.lemontree.common.consts.SysConfig;
 import com.xin.lemontree.controller.article.service.ArticleService;
+import com.xin.lemontree.dao.ArticleDao;
 import com.xin.lemontree.entity.ArticleEntity;
 import com.xin.lemontree.tools.jsoup.JsoupUtils;
 import com.xin.lemontree.tools.jsoup.impl.CSDNWeeklyDocumentAnalyzer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,16 +28,30 @@ public class ArticleServiceImpl implements ArticleService {
     private CSDNWeeklyDocumentAnalyzer csdnWeeklyDocumentAnalyzer;
 
     /**
+     * 文章dao
+     */
+    @Autowired
+    private ArticleDao articleDao;
+
+    /**
      * 根据期号获取文章列表
      *
      * @param stage 期号
      * @return 文章列表
      */
     @Override
-    @Cacheable(value = "reportcache", keyGenerator = "csdnKeyGenerator")
     public List<ArticleEntity> getListForWeek(Integer stage) throws Exception {
         List<ArticleEntity> articleEntityList = JsoupUtils.getEntityList(SysConfig.CSDN_WEEKLY_PREURL + stage, csdnWeeklyDocumentAnalyzer, ArticleEntity.class);
-        articleEntityList.forEach(articleEntity -> articleEntity.setStage(stage));
+        articleEntityList.forEach(articleEntity -> {
+            articleEntity.setStage(stage);
+            articleEntity.setCreator("init");
+            articleEntity.setCreateTime(new Date());
+            articleEntity.setCreatorIP("127.0.0.1");
+            articleEntity.setModifier("init");
+            articleEntity.setModifyTime(new Date());
+            articleEntity.setModifierIP("127.0.0.1");
+        });
+        articleDao.save(articleEntityList);
         return articleEntityList;
     }
 }

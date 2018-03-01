@@ -18,12 +18,14 @@ import java.util.Map;
  */
 @Component
 public class CSDNWeeklyDocumentAnalyzer extends DocumentAnalyzer {
+
     /**
      * 根据html文档对象获取List<Map>
      *
      * @param document html文档对象
      * @return 列表
      */
+    @Override
     public List<Map<String, Object>> getMapList(Document document) {
         List<Map<String, Object>> results = new ArrayList<>();
         if (ObjectUtils.isEmpty(document)) {
