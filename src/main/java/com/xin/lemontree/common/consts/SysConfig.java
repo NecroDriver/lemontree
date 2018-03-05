@@ -28,6 +28,11 @@ public final class SysConfig {
      */
     public static String CSDN_WEEKLY_PREURL;
 
+    /**
+     * 小说地址
+     */
+    public static String NOVEL_BIQUGE_URL;
+
     static {
         loadFromProp();
     }
@@ -41,6 +46,7 @@ public final class SysConfig {
         SSO_SESSION_EXPIRE = propertiesUtils.getInteger("redis.sso_session_expire");
         COOKIE_NAME = propertiesUtils.getString("cookie.name");
         CSDN_WEEKLY_PREURL = propertiesUtils.getString("csdn.weekly.preurl");
+        NOVEL_BIQUGE_URL = propertiesUtils.getString("novel.biquge.url");
         propertiesUtils.close();
     }
 }

@@ -43,4 +43,15 @@ public class CSDNWeeklyDocumentAnalyzer extends DocumentAnalyzer {
         });
         return results;
     }
+
+    /**
+     * 根据html文档对象获取Map
+     *
+     * @param document html文档对象
+     * @return 集合
+     */
+    @Override
+    public Map<String, Object> getMap(Document document) {
+        return null;
+    }
 }

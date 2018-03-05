@@ -20,4 +20,12 @@ public abstract class DocumentAnalyzer {
      * @return 列表
      */
     public abstract List<Map<String, Object>> getMapList(Document document);
+
+    /**
+     * 根据html文档对象获取Map
+     *
+     * @param document html文档对象
+     * @return 集合
+     */
+    public abstract Map<String, Object> getMap(Document document);
 }

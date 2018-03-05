@@ -2,6 +2,7 @@ package com.xin.lemontree.entity;
 
 import com.xin.lemontree.common.base.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 
@@ -11,6 +12,7 @@ import javax.persistence.*;
  * @version 1.0.0
  * @description 用户登录实体类
  */
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "user_login")
 @Entity
 @Data
