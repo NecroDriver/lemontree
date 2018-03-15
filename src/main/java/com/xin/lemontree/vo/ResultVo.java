@@ -50,4 +50,14 @@ public class ResultVo<T> {
     public static ResultVo newResultVo(boolean result, String message, Object data) {
         return new ResultVo(result, message, data);
     }
+
+    /**
+     * 生成成功静态调用方法
+     *
+     * @param data 数据
+     * @return 对象
+     */
+    public static ResultVo successVo(Object data) {
+        return new ResultVo(true, "", data);
+    }
 }

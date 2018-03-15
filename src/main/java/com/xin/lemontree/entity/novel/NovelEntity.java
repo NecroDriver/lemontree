@@ -1,4 +1,4 @@
-package com.xin.lemontree.entity;
+package com.xin.lemontree.entity.novel;
 
 import com.xin.lemontree.common.base.BaseEntity;
 import lombok.Data;
@@ -13,7 +13,7 @@ import javax.persistence.*;
  * @version 1.0.0
  * @description 小说eneity
  */
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @Data
 @Table(name = "novel")
 @Entity

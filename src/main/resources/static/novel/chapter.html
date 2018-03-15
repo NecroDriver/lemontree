@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>章节列表</title>
+</head>
+<body>
+<h1></h1>
+<div id="chapter"></div>
+</body>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script src="../js/common.js"></script>
+<script type="text/javascript">
+    var page;
+    var novelCode = getUrlValue("novelCode");
+    var novelName = getUrlValue("novelName");
+    $(function () {
+        $("h1").text(novelName);
+        getPage(1, 50, 0);
+    });
+
+    function getPage(pageNo, pageSize, orderType) {
+        $.ajax({
+            url: "/novel/" + novelCode + "/page/" + pageNo,
+            type: "post",
+            dataType: "json",
+            data: {
+                pageSize: pageSize,
+                orderType: orderType
+            },
+            success: function (data) {
+                page = data.data;
+                var chapterHtml = "";
+                page.content.forEach(function (value) {
+                    chapterHtml += '<div id="'+ value.id+'">'+ value.chapterName+'</div>';
+                });
+                $("#chapter").append(chapterHtml);
+            },
+            error: function(XMLHttpRequest){
+                console.log(XMLHttpRequest);
+                window.location.href = "/login.html";
+            }
+        });
+
+    }
+</script>
+</html>

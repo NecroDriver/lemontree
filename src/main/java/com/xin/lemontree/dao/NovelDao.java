@@ -1,6 +1,6 @@
 package com.xin.lemontree.dao;
 
-import com.xin.lemontree.entity.NovelEntity;
+import com.xin.lemontree.entity.novel.NovelEntity;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 

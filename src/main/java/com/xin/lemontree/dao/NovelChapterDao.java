@@ -1,6 +1,6 @@
 package com.xin.lemontree.dao;
 
-import com.xin.lemontree.entity.NovelChapterEntity;
+import com.xin.lemontree.entity.novel.NovelChapterEntity;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

@@ -1,5 +1,7 @@
 package com.xin.lemontree.common.base;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,4 +32,9 @@ public class BaseAction {
         this.request = request;
         this.response = response;
     }
+
+    /**
+     * 日志记录
+     */
+    protected Logger logger = LoggerFactory.getLogger(getClass());
 }

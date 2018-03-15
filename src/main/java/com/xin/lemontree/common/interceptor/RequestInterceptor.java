@@ -45,7 +45,7 @@ public class RequestInterceptor implements HandlerInterceptor {
             }
         }
         // 未通过验证，跳转到登录页面，把用户请求的url作为参数传递给登录页面。
-        response.sendRedirect("/login?redirect=" + request.getRequestURI());
+        response.sendRedirect("/login.html?redirect=" + request.getRequestURI());
         return false;
     }
 

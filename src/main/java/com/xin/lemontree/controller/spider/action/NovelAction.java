@@ -2,13 +2,13 @@ package com.xin.lemontree.controller.spider.action;
 
 import com.xin.lemontree.common.base.BaseAction;
 import com.xin.lemontree.controller.spider.service.NovelService;
+import com.xin.lemontree.entity.novel.NovelChapterEntity;
 import com.xin.lemontree.vo.ResultVo;
+import com.xin.lemontree.vo.novel.NovelChapterVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -75,5 +75,28 @@ public class NovelAction extends BaseAction {
     @ResponseBody
     public ResultVo getNovelPage(@PathVariable("pageNo") Integer pageNo, Integer pageSize, Integer orderType) {
         return ResultVo.newResultVo(true, "获取小说分页成功！", novelService.getNovelPage(pageNo, pageSize, orderType));
+    }
+
+    /**
+     * 获取小说章节列表
+     *
+     * @param novelCode 小说编号
+     * @param pageNo    当前页
+     * @param pageSize  每页大小
+     * @param orderType 排序类型
+     * @return 分页数据
+     */
+    @RequestMapping(value = "/{novelCode}/page/{pageNo}", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultVo getNovelChapterPage(@PathVariable("novelCode") String novelCode, @PathVariable("pageNo") Integer pageNo, Integer pageSize, Integer orderType) {
+
+        /*-------------------------------------------- 日志记录 ------------------------------------------------------*/
+        logger.debug("获取小说章节列表");
+
+        /*-------------------------------------------- 业务处理 ------------------------------------------------------*/
+        Page<NovelChapterVo> novelChapterVoPage = novelService.getNovelChapterPage(novelCode, pageNo, pageSize, orderType);
+
+        /*-------------------------------------------- 方法返回 ------------------------------------------------------*/
+        return ResultVo.successVo(novelChapterVoPage);
     }
 }

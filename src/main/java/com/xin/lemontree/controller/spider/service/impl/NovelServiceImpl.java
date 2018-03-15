@@ -1,17 +1,21 @@
 package com.xin.lemontree.controller.spider.service.impl;
 
+import com.xin.lemontree.common.base.BaseService;
 import com.xin.lemontree.common.consts.SysConfig;
 import com.xin.lemontree.controller.spider.service.NovelService;
 import com.xin.lemontree.dao.NovelChapterDao;
 import com.xin.lemontree.dao.NovelDao;
-import com.xin.lemontree.entity.NovelChapterEntity;
-import com.xin.lemontree.entity.NovelEntity;
+import com.xin.lemontree.entity.novel.NovelChapterEntity;
+import com.xin.lemontree.entity.novel.NovelEntity;
+import com.xin.lemontree.tools.convert.ConvertUtils;
 import com.xin.lemontree.tools.jsoup.JsoupUtils;
 import com.xin.lemontree.tools.jsoup.impl.NovelDocumentAnalyzer;
+import com.xin.lemontree.vo.novel.NovelChapterVo;
+import com.xin.lemontree.vo.novel.NovelVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -27,7 +31,7 @@ import java.util.*;
  */
 @Service
 @Transactional
-public class NovelServiceImpl implements NovelService {
+public class NovelServiceImpl extends BaseService implements NovelService {
 
     /**
      * 小说解析器
@@ -157,14 +161,49 @@ public class NovelServiceImpl implements NovelService {
      * @return 分页数据
      */
     @Override
-    public Page<NovelEntity> getNovelPage(Integer pageNo, Integer pageSize, Integer orderType) {
+    public Page<NovelVo> getNovelPage(Integer pageNo, Integer pageSize, Integer orderType) {
 
         /*------------------------------------------- 参数声明 ------------------------------------------*/
         Sort.Order order = new Sort.Order(Sort.Direction.DESC, "id");
         Sort sort = new Sort(order);
-        PageRequest pageRequest = new PageRequest(pageNo, pageSize, sort);
+        PageRequest pageRequest = new PageRequest(pageNo - 1, pageSize, sort);
+
+        /*------------------------------------------- 业务处理 ------------------------------------------*/
+        Page<NovelEntity> novelEntityPage = novelDao.findAll(pageRequest);
+        Page<NovelVo> novelVoPage = novelEntityPage.map(novelEntity -> ConvertUtils.convert(novelEntity, NovelVo.class));
+
+        /*------------------------------------------- 日志记录 ------------------------------------------*/
+        logger.debug("成功获取小说列表" + novelVoPage);
 
         /*------------------------------------------- 方法返回 ------------------------------------------*/
-        return novelDao.findAll(pageRequest);
+        return novelVoPage;
+    }
+
+    /**
+     * 获取小说章节列表
+     *
+     * @param novelCode 小说编号
+     * @param pageNo    当前页
+     * @param pageSize  每页大小
+     * @param orderType 排序类型
+     * @return 分页数据
+     */
+    @Override
+    public Page<NovelChapterVo> getNovelChapterPage(String novelCode, Integer pageNo, Integer pageSize, Integer orderType) {
+
+        /*------------------------------------------- 参数声明 ------------------------------------------*/
+        Sort.Order idOrder = new Sort.Order(Sort.Direction.DESC, "id");
+        Sort sort = new Sort(idOrder);
+        PageRequest pageRequest = new PageRequest(pageNo - 1, pageSize, sort);
+
+        /*------------------------------------------- 业务处理 ------------------------------------------*/
+        Page<NovelChapterEntity> novelChapterEntityPage = novelChapterDao.findAll(pageRequest);
+        Page<NovelChapterVo> novelChapterVoPage = novelChapterEntityPage.map(novelChapterEntity -> ConvertUtils.convert(novelChapterEntity, NovelChapterVo.class));
+
+        /*------------------------------------------- 日志记录 ------------------------------------------*/
+        logger.debug("成功获取小说章节列表" + novelChapterVoPage);
+
+        /*------------------------------------------- 方法返回 ------------------------------------------*/
+        return novelChapterVoPage;
     }
 }

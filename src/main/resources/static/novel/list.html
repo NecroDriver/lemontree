@@ -1,0 +1,42 @@
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>列表</title>
+</head>
+<body>
+<h1>小说列表</h1>
+<div id="content"></div>
+</body>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript">
+    var page;
+    $(function () {
+        getPage(1, 10, 0);
+    });
+
+    function getPage(pageNo, pageSize, orderType) {
+        $.ajax({
+            url: "/novel/page/" + pageNo,
+            type: "post",
+            data: {
+                pageSize: pageSize,
+                orderType: orderType
+            },
+            dataType: "json",
+            success: function (data) {
+                page = data.data;
+                $("#content").empty();
+                var contentHtml = "";
+                page.content.forEach(function (value) {
+                    contentHtml += '<div id="' + value.novelCode + '"><a href="chapter.html?novelCode=' + value.novelCode + '&novelName=' + value.novelName + '">' + value.novelName + '</a></div>';
+                });
+                $("#content").append(contentHtml);
+            },
+            error: function (XMLHttpRequest) {
+                console.log(XMLHttpRequest);
+                window.location.href = "/login.html";
+            }
+        })
+    }
+</script>
+</html>

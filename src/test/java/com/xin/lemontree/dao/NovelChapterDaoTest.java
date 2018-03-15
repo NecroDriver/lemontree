@@ -1,19 +1,13 @@
 package com.xin.lemontree.dao;
 
-import com.xin.lemontree.LemontreeApplication;
-import com.xin.lemontree.entity.NovelChapterEntity;
+import com.xin.lemontree.entity.novel.NovelChapterEntity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * @author creator 11934 2018/3/5 0005 14:03

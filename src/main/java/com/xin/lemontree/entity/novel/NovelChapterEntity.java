@@ -1,4 +1,4 @@
-package com.xin.lemontree.entity;
+package com.xin.lemontree.entity.novel;
 
 import com.xin.lemontree.common.base.BaseEntity;
 import lombok.Data;
