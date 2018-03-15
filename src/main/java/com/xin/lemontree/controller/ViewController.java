@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @description
  */
 @Controller
-public class HelloController {
+public class ViewController {
 
     /**
      * 初始化登录页面
@@ -42,5 +42,25 @@ public class HelloController {
     @RequestMapping(value = "/websocket", method = RequestMethod.GET)
     public String websocket() {
         return "websocket";
+    }
+
+    /**
+     * 文章
+     *
+     * @return view
+     */
+    @RequestMapping(value = "/article", method = RequestMethod.GET)
+    public String article() {
+        return "article";
+    }
+
+    /**
+     * 小说列表
+     *
+     * @return view
+     */
+    @RequestMapping(value = "/novel/list", method = RequestMethod.GET)
+    public String novelList() {
+        return "novel/list";
     }
 }

@@ -1,5 +1,6 @@
 package com.xin.lemontree.controller.user.action;
 
+import com.xin.lemontree.common.base.BaseAction;
 import com.xin.lemontree.controller.user.service.UserLoginService;
 import com.xin.lemontree.vo.ResultVo;
 import com.xin.lemontree.vo.UserLoginVo;
@@ -17,31 +18,13 @@ import javax.servlet.http.HttpServletResponse;
  */
 @RestController
 @RequestMapping("/user")
-public class UserAction {
+public class UserAction extends BaseAction {
 
     /**
      * 用户登录service
      */
     @Autowired
     private UserLoginService userLoginService;
-
-    private HttpServletRequest request;
-
-    private HttpServletResponse response;
-
-    /**
-     * 说明：ModelAttribute的作用
-     * 1)放置在形参上，表示引用model中的数据
-     * 2）放置在方法上面：表示请求该类的每个Action前都会首先执行它，也可以将一些准备数据的操作放置在该方法里面。
-     *
-     * @param request
-     * @param response
-     */
-    @ModelAttribute
-    public void setReqAndRes(HttpServletRequest request, HttpServletResponse response) {
-        this.request = request;
-        this.response = response;
-    }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResultVo register(String account, String userName, String password, String phone, String email) {
@@ -75,14 +58,25 @@ public class UserAction {
     }
 
     /**
-     * 获取用户
+     * 通过token获取用户
      *
      * @param token
-     * @return
+     * @return userLoginVo
      */
-    @RequestMapping(value = "/user/{token}", method = RequestMethod.POST)
-    public ResultVo getUser(String token) {
+    @RequestMapping(value = "/get/{token}", method = RequestMethod.POST)
+    public ResultVo getUserByToken(String token) {
         UserLoginVo userLoginVo = userLoginService.queryUserByToken(token);
+        return ResultVo.newResultVo(true, "成功获取用户信息！", userLoginVo);
+    }
+
+    /**
+     * 通过cookie获取用户
+     *
+     * @return userLoginVo
+     */
+    @RequestMapping(value = "/get", method = RequestMethod.POST)
+    public ResultVo getUser() {
+        UserLoginVo userLoginVo = userLoginService.queryUser(request);
         return ResultVo.newResultVo(true, "成功获取用户信息！", userLoginVo);
     }
 }

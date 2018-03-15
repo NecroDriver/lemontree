@@ -20,8 +20,7 @@ import java.util.List;
  * @description
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = LemontreeApplication.class)
-@WebAppConfiguration
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserLoginEntityDaoTest {
 
     @Autowired

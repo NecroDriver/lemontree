@@ -1,0 +1,39 @@
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>列表</title>
+</head>
+<body>
+<div>用不用bootstrap呢</div>
+<table>
+    <tbody>
+    <tr>
+        <td>章节列表</td>
+    </tr>
+    </tbody>
+</table>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript">
+    var page;
+    $(function () {
+       getPage(0, 10, 0);
+    });
+
+    function getPage(pageNo, pageSize, orderType){
+        $.ajax({
+            url:"/novel/page/"+pageNo,
+            type:"post",
+            data:{
+                pageSize:pageSize,
+                orderType:orderType
+            },
+            dataType:"json",
+            success:function (data) {
+                page = data.data;
+                console.log(page);
+            }
+        })
+    }
+</script>
+</body>
+</html>

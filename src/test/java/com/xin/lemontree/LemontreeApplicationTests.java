@@ -20,11 +20,16 @@ public class LemontreeApplicationTests {
 ////        BeanUtils.copyProperties(userLoginEntity, userLoginVo);
 //        UserLoginVo userLoginVo = ConvertUtils.convert(userLoginEntity, UserLoginVo.class);
 //        System.out.println(userLoginVo);
-        System.out.println(DigestUtils.md5DigestAsHex(("111").getBytes()));
-        System.out.println(DigestUtils.md5Digest(("111").getBytes()));
+//        System.out.println(DigestUtils.md5DigestAsHex(("111").getBytes()));
+//        System.out.println(DigestUtils.md5Digest(("111").getBytes()));
+        sayHello();
 	}
 
 	public static void sayHello(){
-	    System.out.println("123");
+	    int sum = 0;
+	    for(int i=1;i<=365;i++){
+	    	sum += i;
+		}
+		System.out.println(sum);
     }
 }

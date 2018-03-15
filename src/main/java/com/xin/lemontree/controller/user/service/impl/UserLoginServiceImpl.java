@@ -142,6 +142,9 @@ public class UserLoginServiceImpl implements UserLoginService {
      */
     @Override
     public UserLoginVo queryUserByToken(String token) {
+        if (StringUtils.isEmpty(token)) {
+            Assert.notNull(null, "未查询到登录用户！");
+        }
         // 从redis中获取用户信息
         ValueOperations<String, String> operations = stringRedisTemplate.opsForValue();
         String json = operations.get(SysConfig.REDIS_USER_SESSION_KEY + token);
@@ -152,5 +155,16 @@ public class UserLoginServiceImpl implements UserLoginService {
             return JsonUtils.jsonToObject(json, UserLoginVo.class);
         }
         return null;
+    }
+
+    /**
+     * 获取用户信息
+     *
+     * @return 数据
+     */
+    @Override
+    public UserLoginVo queryUser(HttpServletRequest request) {
+        String token = CookieUtils.getCookieValue(request, SysConfig.COOKIE_NAME);
+        return queryUserByToken(token);
     }
 }

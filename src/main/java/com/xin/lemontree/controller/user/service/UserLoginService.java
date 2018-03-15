@@ -29,7 +29,7 @@ public interface UserLoginService {
      * 用户登录
      *
      * @param request  请求
-     * @param response  响应
+     * @param response 响应
      * @param account  账户
      * @param password 密码
      * @return 数据
@@ -46,8 +46,16 @@ public interface UserLoginService {
     /**
      * 根据口令获取用户信息
      *
-     * @param token
+     * @param token 口令
      * @return 数据
      */
     UserLoginVo queryUserByToken(String token);
+
+    /**
+     * 获取用户信息
+     *
+     * @param request 请求
+     * @return 数据
+     */
+    UserLoginVo queryUser(HttpServletRequest request);
 }

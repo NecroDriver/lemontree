@@ -40,13 +40,6 @@ public class NovelDocumentAnalyzer extends DocumentAnalyzer {
             result.put("chapterName", element.getElementsByTag("a").get(0).text());
             String url = element.getElementsByTag("a").get(0).attr("href");
             result.put("url", url);
-            try {
-                Map<String, Object> map = JsoupUtils.getMap(url, this);
-                result.put("content", map.get("content"));
-            } catch (Exception e) {
-//                e.printStackTrace();
-                System.out.println("发生异常！" + result.get("chpaterName"));
-            }
             results.add(result);
         }
         return results;

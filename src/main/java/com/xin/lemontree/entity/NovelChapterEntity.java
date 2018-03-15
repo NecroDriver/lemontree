@@ -15,7 +15,6 @@ import javax.persistence.*;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@Component
 @Table(name = "novel_chapter")
 @Entity
 public class NovelChapterEntity extends BaseEntity {
