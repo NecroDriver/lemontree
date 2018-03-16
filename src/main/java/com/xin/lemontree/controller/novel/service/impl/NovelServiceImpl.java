@@ -1,8 +1,8 @@
-package com.xin.lemontree.controller.spider.service.impl;
+package com.xin.lemontree.controller.novel.service.impl;
 
 import com.xin.lemontree.common.base.BaseService;
 import com.xin.lemontree.common.consts.SysConfig;
-import com.xin.lemontree.controller.spider.service.NovelService;
+import com.xin.lemontree.controller.novel.service.NovelService;
 import com.xin.lemontree.dao.NovelChapterDao;
 import com.xin.lemontree.dao.NovelDao;
 import com.xin.lemontree.entity.novel.NovelChapterEntity;
@@ -13,7 +13,6 @@ import com.xin.lemontree.tools.jsoup.impl.NovelDocumentAnalyzer;
 import com.xin.lemontree.vo.novel.NovelChapterVo;
 import com.xin.lemontree.vo.novel.NovelVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -164,7 +163,7 @@ public class NovelServiceImpl extends BaseService implements NovelService {
     public Page<NovelVo> getNovelPage(Integer pageNo, Integer pageSize, Integer orderType) {
 
         /*------------------------------------------- 参数声明 ------------------------------------------*/
-        Sort.Order order = new Sort.Order(Sort.Direction.DESC, "id");
+        Sort.Order order = new Sort.Order(orderType.equals(0) ? Sort.Direction.DESC : Sort.Direction.ASC, "id");
         Sort sort = new Sort(order);
         PageRequest pageRequest = new PageRequest(pageNo - 1, pageSize, sort);
 
@@ -192,7 +191,7 @@ public class NovelServiceImpl extends BaseService implements NovelService {
     public Page<NovelChapterVo> getNovelChapterPage(String novelCode, Integer pageNo, Integer pageSize, Integer orderType) {
 
         /*------------------------------------------- 参数声明 ------------------------------------------*/
-        Sort.Order idOrder = new Sort.Order(Sort.Direction.DESC, "id");
+        Sort.Order idOrder = new Sort.Order(orderType.equals(0) ? Sort.Direction.DESC : Sort.Direction.ASC, "id");
         Sort sort = new Sort(idOrder);
         PageRequest pageRequest = new PageRequest(pageNo - 1, pageSize, sort);
 

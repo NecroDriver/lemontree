@@ -18,7 +18,7 @@ public class ExceptionHandlerController {
     /**
      * 统一异常处理
      *
-     * @param e
+     * @param e Exception
      */
     @ExceptionHandler(Exception.class)
     public void handleException(Exception e) {
@@ -34,5 +34,16 @@ public class ExceptionHandlerController {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResultVo handleIllegalArgumentException(IllegalArgumentException e) {
         return ResultVo.newResultVo(false, e.getMessage(), null);
+    }
+
+    /**
+     * 捕捉action的校验异常
+     *
+     * @param e ValidateException
+     * @return 结果
+     */
+    @ExceptionHandler(ValidateException.class)
+    public ResultVo handleValidateException(ValidateException e) {
+        return ResultVo.failureVo(e.getMessage());
     }
 }

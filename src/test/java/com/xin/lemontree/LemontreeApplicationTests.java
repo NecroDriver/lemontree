@@ -22,14 +22,11 @@ public class LemontreeApplicationTests {
 //        System.out.println(userLoginVo);
 //        System.out.println(DigestUtils.md5DigestAsHex(("111").getBytes()));
 //        System.out.println(DigestUtils.md5Digest(("111").getBytes()));
-        sayHello();
+        sayHello(null);
 	}
 
-	public static void sayHello(){
-	    int sum = 0;
-	    for(int i=1;i<=365;i++){
-	    	sum += i;
-		}
-		System.out.println(sum);
+	public static void sayHello(Object object){
+		System.out.println(object);
+		System.out.println(object + "123");
     }
 }

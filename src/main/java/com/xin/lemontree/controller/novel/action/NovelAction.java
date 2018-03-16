@@ -1,13 +1,14 @@
-package com.xin.lemontree.controller.spider.action;
+package com.xin.lemontree.controller.novel.action;
 
 import com.xin.lemontree.common.base.BaseAction;
-import com.xin.lemontree.controller.spider.service.NovelService;
-import com.xin.lemontree.entity.novel.NovelChapterEntity;
+import com.xin.lemontree.controller.novel.service.NovelService;
 import com.xin.lemontree.vo.ResultVo;
 import com.xin.lemontree.vo.novel.NovelChapterVo;
+import com.xin.lemontree.vo.novel.NovelVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -74,7 +75,24 @@ public class NovelAction extends BaseAction {
     @RequestMapping(value = "/page/{pageNo}", method = RequestMethod.POST)
     @ResponseBody
     public ResultVo getNovelPage(@PathVariable("pageNo") Integer pageNo, Integer pageSize, Integer orderType) {
-        return ResultVo.newResultVo(true, "获取小说分页成功！", novelService.getNovelPage(pageNo, pageSize, orderType));
+
+        /*-------------------------------------------- 日志记录 ------------------------------------------------------*/
+        logger.debug("获取小说分页");
+
+        /*-------------------------------------------- 参数校验 ------------------------------------------------------*/
+        validateInteger(orderType, "排序方式");
+        if (ObjectUtils.isEmpty(pageNo)) {
+            pageNo = 1;
+        }
+        if (ObjectUtils.isEmpty(pageSize)) {
+            pageSize = 10;
+        }
+
+        /*-------------------------------------------- 业务处理 ------------------------------------------------------*/
+        Page<NovelVo> novelVoPage = novelService.getNovelPage(pageNo, pageSize, orderType);
+
+        /*-------------------------------------------- 方法返回 ------------------------------------------------------*/
+        return ResultVo.newResultVo(true, "获取小说分页成功！", novelVoPage);
     }
 
     /**
@@ -92,6 +110,16 @@ public class NovelAction extends BaseAction {
 
         /*-------------------------------------------- 日志记录 ------------------------------------------------------*/
         logger.debug("获取小说章节列表");
+
+        /*-------------------------------------------- 参数校验 ------------------------------------------------------*/
+        validateNotEmpty(novelCode, "小说编号");
+        validateInteger(orderType, "排序方式");
+        if (ObjectUtils.isEmpty(pageNo)) {
+            pageNo = 1;
+        }
+        if (ObjectUtils.isEmpty(pageSize)) {
+            pageSize = 25;
+        }
 
         /*-------------------------------------------- 业务处理 ------------------------------------------------------*/
         Page<NovelChapterVo> novelChapterVoPage = novelService.getNovelChapterPage(novelCode, pageNo, pageSize, orderType);

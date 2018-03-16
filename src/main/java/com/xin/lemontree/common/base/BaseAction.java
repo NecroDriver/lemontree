@@ -1,11 +1,14 @@
 package com.xin.lemontree.common.base;
 
+import com.xin.lemontree.controller.exception.ValidateException;
+import com.xin.lemontree.tools.type.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.regex.Pattern;
 
 /**
  * @author creator 11934 2018/3/13 0013 17:04
@@ -37,4 +40,30 @@ public class BaseAction {
      * 日志记录
      */
     protected Logger logger = LoggerFactory.getLogger(getClass());
+
+    /**
+     * 验证是否为整数
+     *
+     * @param object     对象
+     * @param objectName 对象名称
+     */
+    protected void validateInteger(Object object, String objectName) {
+        String patternStr = "\\d";
+        if (!Pattern.matches(patternStr, object + "")) {
+            throw new ValidateException(objectName + "应该为整数！");
+        }
+    }
+
+
+    /**
+     * 验证是否为空
+     *
+     * @param object     对象
+     * @param objectName 对象名称
+     */
+    protected void validateNotEmpty(Object object, String objectName) {
+        if (!StringUtils.isNotEmpty(object + "")) {
+            throw new ValidateException(objectName + "不能为空！");
+        }
+    }
 }

@@ -60,4 +60,14 @@ public class ResultVo<T> {
     public static ResultVo successVo(Object data) {
         return new ResultVo(true, "", data);
     }
+
+    /**
+     * 生成失败静态调用方法
+     *
+     * @param message 信息
+     * @return 对象
+     */
+    public static ResultVo failureVo(String message) {
+        return new ResultVo(false, message, null);
+    }
 }

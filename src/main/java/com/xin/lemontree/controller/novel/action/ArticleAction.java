@@ -1,6 +1,6 @@
-package com.xin.lemontree.controller.spider.action;
+package com.xin.lemontree.controller.novel.action;
 
-import com.xin.lemontree.controller.spider.service.ArticleService;
+import com.xin.lemontree.controller.novel.service.ArticleService;
 import com.xin.lemontree.entity.ArticleEntity;
 import com.xin.lemontree.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;

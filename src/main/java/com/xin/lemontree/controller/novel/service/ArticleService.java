@@ -1,4 +1,4 @@
-package com.xin.lemontree.controller.spider.service;
+package com.xin.lemontree.controller.novel.service;
 
 import com.xin.lemontree.entity.ArticleEntity;
 

@@ -1,7 +1,7 @@
-package com.xin.lemontree.controller.spider.service.impl;
+package com.xin.lemontree.controller.novel.service.impl;
 
 import com.xin.lemontree.common.consts.SysConfig;
-import com.xin.lemontree.controller.spider.service.ArticleService;
+import com.xin.lemontree.controller.novel.service.ArticleService;
 import com.xin.lemontree.dao.ArticleDao;
 import com.xin.lemontree.entity.ArticleEntity;
 import com.xin.lemontree.tools.jsoup.JsoupUtils;
