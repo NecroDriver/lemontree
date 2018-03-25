@@ -1,5 +1,6 @@
 package com.xin.lemontree.dao;
 
+import com.xin.lemontree.dao.novel.NovelChapterDao;
 import com.xin.lemontree.entity.novel.NovelChapterEntity;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -33,6 +33,11 @@ public class NovelVo extends BaseVo {
     private String novelName;
 
     /**
+     * 小说简介
+     */
+    private String description;
+
+    /**
      * url
      */
     private String url;
@@ -52,4 +57,8 @@ public class NovelVo extends BaseVo {
      */
     private Integer flagEnd;
 
+    /**
+     * 是否删除，0：否 1：是
+     */
+    private Integer flagDelete;
 }

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 /**
  * @author creator 11934 2018/3/2 0002 15:33
@@ -126,5 +128,24 @@ public class NovelAction extends BaseAction {
 
         /*-------------------------------------------- 方法返回 ------------------------------------------------------*/
         return ResultVo.successVo(novelChapterVoPage);
+    }
+
+    /**
+     * 获取所有小说列表
+     *
+     * @return 列表
+     */
+    @RequestMapping(value = "/list", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultVo getNovelList() {
+
+        /*-------------------------------------------- 日志记录 ------------------------------------------------------*/
+        logger.debug("获取小说列表");
+
+        /*-------------------------------------------- 业务处理 ------------------------------------------------------*/
+        List<NovelVo> novelVoList = novelService.getNovelList();
+
+        /*-------------------------------------------- 方法返回 ------------------------------------------------------*/
+        return ResultVo.newResultVo(true, "获取小说列表成功！", novelVoList);
     }
 }

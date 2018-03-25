@@ -1,4 +1,4 @@
-package com.xin.lemontree.dao;
+package com.xin.lemontree.dao.novel;
 
 import com.xin.lemontree.entity.novel.NovelChapterEntity;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

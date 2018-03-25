@@ -87,7 +87,7 @@
 function hideURLbar() {
     window.scrollTo(0, 1);
 } </script>
-<script src="js/jquery.js"></script>
+<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
 <script src="js/common.js"></script>
 <script type="text/javascript">
     // 用于标记是否记住用户名
@@ -121,7 +121,7 @@ function hideURLbar() {
                     if (flagRemember == 1) {
                         setCookie("account", account, 7 * 24 * 60 * 60);
                     }
-                    window.location.href = "main.html";
+                    window.location.href = "mainTest.html";
                 } else {
                     alert(data.message);
                 }

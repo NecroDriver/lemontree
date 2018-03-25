@@ -3,8 +3,9 @@ package com.xin.lemontree.controller.novel.service.impl;
 import com.xin.lemontree.common.base.BaseService;
 import com.xin.lemontree.common.consts.SysConfig;
 import com.xin.lemontree.controller.novel.service.NovelService;
-import com.xin.lemontree.dao.NovelChapterDao;
-import com.xin.lemontree.dao.NovelDao;
+import com.xin.lemontree.dao.novel.NovelChapterDao;
+import com.xin.lemontree.dao.novel.NovelDao;
+import com.xin.lemontree.dao.novel.NovelSpecification;
 import com.xin.lemontree.entity.novel.NovelChapterEntity;
 import com.xin.lemontree.entity.novel.NovelEntity;
 import com.xin.lemontree.tools.convert.ConvertUtils;
@@ -204,5 +205,27 @@ public class NovelServiceImpl extends BaseService implements NovelService {
 
         /*------------------------------------------- 方法返回 ------------------------------------------*/
         return novelChapterVoPage;
+    }
+
+    /**
+     * 获取所有小说列表
+     *
+     * @return 列表
+     */
+    @Override
+    public List<NovelVo> getNovelList() {
+
+        /*------------------------------------------- 业务处理 ------------------------------------------*/
+        List<NovelEntity> novelEntityList = novelDao.findAll(NovelSpecification.selectList());
+        List<NovelVo> novelVoList = new ArrayList<>();
+        for (NovelEntity novelEntity : novelEntityList) {
+            novelVoList.add(ConvertUtils.convert(novelEntity, NovelVo.class));
+        }
+
+        /*------------------------------------------- 日志记录 ------------------------------------------*/
+        logger.debug("成功获取小说列表" + novelVoList);
+
+        /*------------------------------------------- 方法返回 ------------------------------------------*/
+        return novelVoList;
     }
 }

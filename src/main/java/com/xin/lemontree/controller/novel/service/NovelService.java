@@ -60,4 +60,11 @@ public interface NovelService {
      * @return 分页数据
      */
     Page<NovelChapterVo> getNovelChapterPage(String novelCode, Integer pageNo, Integer pageSize, Integer orderType);
+
+    /**
+     * 获取所有小说列表
+     *
+     * @return 列表
+     */
+    List<NovelVo> getNovelList();
 }
