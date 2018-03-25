@@ -148,4 +148,24 @@ public class NovelAction extends BaseAction {
         /*-------------------------------------------- 方法返回 ------------------------------------------------------*/
         return ResultVo.newResultVo(true, "获取小说列表成功！", novelVoList);
     }
+
+    /**
+     * 获取小说章节
+     *
+     * @param id id
+     * @return 信息
+     */
+    @RequestMapping(value = "/chapter/{id}", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultVo getNovelChapter(@PathVariable("id") Integer id) {
+
+        /*-------------------------------------------- 日志记录 ------------------------------------------------------*/
+        logger.debug("获取小说章节");
+
+        /*-------------------------------------------- 业务处理 ------------------------------------------------------*/
+        NovelChapterVo novelChapterVo = novelService.getNovelChapter(id);
+
+        /*-------------------------------------------- 方法返回 ------------------------------------------------------*/
+        return ResultVo.successVo(novelChapterVo);
+    }
 }

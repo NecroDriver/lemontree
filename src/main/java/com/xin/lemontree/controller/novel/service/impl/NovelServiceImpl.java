@@ -228,4 +228,24 @@ public class NovelServiceImpl extends BaseService implements NovelService {
         /*------------------------------------------- 方法返回 ------------------------------------------*/
         return novelVoList;
     }
+
+    /**
+     * 获取小说章节
+     *
+     * @param id id
+     * @return 信息
+     */
+    @Override
+    public NovelChapterVo getNovelChapter(Integer id) {
+
+        /*------------------------------------------- 业务处理 ------------------------------------------*/
+        NovelChapterEntity novelChapterEntity = novelChapterDao.findOne(id);
+        NovelChapterVo novelChapterVo = ConvertUtils.convert(novelChapterEntity, NovelChapterVo.class);
+
+        /*------------------------------------------- 日志记录 ------------------------------------------*/
+        logger.debug("成功获取小说章节" + novelChapterVo);
+
+        /*------------------------------------------- 方法返回 ------------------------------------------*/
+        return novelChapterVo;
+    }
 }

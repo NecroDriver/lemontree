@@ -68,11 +68,12 @@
                 var contentHtml = "";
                 console.log(content);
                 content.forEach(function (value) {
-                    contentHtml += '<dd><a href="detail.html">' + value.chapterName + '</a></dd>';
+                    contentHtml += '<dd><a href="detail.html?id=' + value.id + '">' + value.chapterName + '</a></dd>';
                 });
                 $(".panel-body dl").append(contentHtml);
             },
             error: function (XMLHttpRequest) {
+                console.log(XMLHttpRequest);
                 location.href = "../login.html";
             }
         })
