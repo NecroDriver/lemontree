@@ -19,6 +19,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.util.ObjectUtils;
 
 import javax.transaction.Transactional;
 import java.util.*;
@@ -241,11 +242,42 @@ public class NovelServiceImpl extends BaseService implements NovelService {
         /*------------------------------------------- 业务处理 ------------------------------------------*/
         NovelChapterEntity novelChapterEntity = novelChapterDao.findOne(id);
         NovelChapterVo novelChapterVo = ConvertUtils.convert(novelChapterEntity, NovelChapterVo.class);
+        // 获取上一章节id
+        novelChapterEntity = novelChapterDao.findTopByIdLessThanAndNovelCodeEqualsOrderByIdDesc(id, novelChapterVo.getNovelCode());
+        if (!ObjectUtils.isEmpty(novelChapterEntity)) {
+            novelChapterVo.setPrevId(novelChapterEntity.getId());
+        }
+        // 获取下一章节id
+        novelChapterEntity = novelChapterDao.findTopByIdGreaterThanAndNovelCodeEqualsOrderById(id, novelChapterVo.getNovelCode());
+        if (!ObjectUtils.isEmpty(novelChapterEntity)) {
+            novelChapterVo.setNextId(novelChapterEntity.getId());
+        }
 
         /*------------------------------------------- 日志记录 ------------------------------------------*/
         logger.debug("成功获取小说章节" + novelChapterVo);
 
         /*------------------------------------------- 方法返回 ------------------------------------------*/
         return novelChapterVo;
+    }
+
+    /**
+     * 获取小说
+     *
+     * @param novelCode 小说编号
+     * @return 信息
+     */
+    @Override
+    public NovelVo getNovel(String novelCode) {
+
+        /*------------------------------------------- 业务处理 ------------------------------------------*/
+        NovelEntity novelEntity = novelDao.findTopByNovelCodeEquals(novelCode);
+        Assert.notNull(novelEntity, "未查询到该小说！");
+        NovelVo novelVo = ConvertUtils.convert(novelEntity, NovelVo.class);
+
+        /*------------------------------------------- 日志记录 ------------------------------------------*/
+        logger.debug("成功获取小说" + novelVo);
+
+        /*------------------------------------------- 方法返回 ------------------------------------------*/
+        return novelVo;
     }
 }

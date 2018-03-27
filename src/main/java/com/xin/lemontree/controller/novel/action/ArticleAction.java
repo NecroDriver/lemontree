@@ -19,7 +19,7 @@ import java.util.List;
  * @description 文章action
  */
 @Controller
-@RequestMapping("/article")
+@RequestMapping("/api/article")
 public class ArticleAction {
 
     /**

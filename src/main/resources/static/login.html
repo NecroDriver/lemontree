@@ -108,7 +108,7 @@ function hideURLbar() {
         var account = $(".login").find("input[name='account']").val();
         var password = $(".login").find("input[name='password']").val();
         $.ajax({
-            url: "/user/login",
+            url: "/api/user/login",
             type: "post",
             dataType: "json",
             data: {
@@ -136,7 +136,7 @@ function hideURLbar() {
         var email = $(".register").find("input[name='email']");
         var phone = $(".register").find("input[name='phone']");
         $.ajax({
-            url: "/user/register",
+            url: "/api/user/register",
             type: "post",
             dataType: "json",
             data: {

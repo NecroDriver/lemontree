@@ -8,6 +8,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author creator 11934 2018/3/2 0002 18:54
@@ -33,6 +34,23 @@ public interface NovelChapterDao extends PagingAndSortingRepository<NovelChapter
      */
     NovelChapterEntity findTopByNovelCodeEqualsOrderByIdDesc(String novelCode);
 
+    /**
+     * 查询上一章节
+     *
+     * @param id        id
+     * @param novelCode 小说编号
+     * @return
+     */
+    NovelChapterEntity findTopByIdLessThanAndNovelCodeEqualsOrderByIdDesc(Integer id, String novelCode);
+
+    /**
+     * 获取下一章节
+     *
+     * @param id        id
+     * @param novelCode 小说编号
+     * @return
+     */
+    NovelChapterEntity findTopByIdGreaterThanAndNovelCodeEqualsOrderById(Integer id, String novelCode);
 
     /**
      * 更新章节内容

@@ -21,7 +21,7 @@ import java.util.List;
  * @description 小说action
  */
 @Controller
-@RequestMapping("/novel")
+@RequestMapping("/api/novel")
 public class NovelAction extends BaseAction {
 
     /**
@@ -167,5 +167,25 @@ public class NovelAction extends BaseAction {
 
         /*-------------------------------------------- 方法返回 ------------------------------------------------------*/
         return ResultVo.successVo(novelChapterVo);
+    }
+
+    /**
+     * 获取小说
+     *
+     * @param novelCode 小说编号
+     * @return 信息
+     */
+    @RequestMapping(value = "/{novelCode}", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultVo getNovel(@PathVariable("novelCode") String novelCode) {
+
+        /*-------------------------------------------- 日志记录 ------------------------------------------------------*/
+        logger.debug("获取小说");
+
+        /*-------------------------------------------- 业务处理 ------------------------------------------------------*/
+        NovelVo novelVo = novelService.getNovel(novelCode);
+
+        /*-------------------------------------------- 方法返回 ------------------------------------------------------*/
+        return ResultVo.successVo(novelVo);
     }
 }

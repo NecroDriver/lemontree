@@ -23,6 +23,16 @@
         #novel .thumbnail:hover {
             cursor: pointer;
         }
+
+        #novel .thumbnail img {
+            width: 190px;
+            height: 250px;
+        }
+
+        #novel .thumbnail .caption {
+            height: 205px;
+            overflow: hidden;
+        }
     </style>
 </head>
 <body data-spy="scroll" data-target="">
@@ -63,7 +73,7 @@
                             </ul>
                         </li>
                     </ul>
-                    <ul class="nav navbar-nav navbar-right">
+                    <ul class="nav navbar-nav navbar-right" style="margin-right: 0">
                         <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> 登出</a></li>
                     </ul>
                 </div>
@@ -169,13 +179,13 @@
 
         // 设置点击事件
         $("#novel .thumbnail").click(function () {
-            location.href = "novel/list.html?novelCode=" + $(this).find("img").attr("alt") + "&novelName=" + $(this).find("h3").text();
+            location.href = "novel/list.html?novelCode=" + $(this).find("img").attr("alt");
         });
     });
 
     function getNovelPage(pageNo, pageSize, orderType) {
         $.ajax({
-            url: "/novel/page/" + pageNo,
+            url: "/api/novel/page/" + pageNo,
             type: "post",
             dataType: "json",
             data: {

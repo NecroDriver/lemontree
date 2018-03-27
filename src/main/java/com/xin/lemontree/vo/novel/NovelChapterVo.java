@@ -42,4 +42,13 @@ public class NovelChapterVo extends BaseVo {
      */
     private String content;
 
+    /**
+     * 上一章id
+     */
+    private Integer prevId;
+
+    /**
+     * 下一章id
+     */
+    private Integer nextId;
 }

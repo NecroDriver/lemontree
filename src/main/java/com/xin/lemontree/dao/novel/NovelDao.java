@@ -10,5 +10,13 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * @version 1.0.0
  * @description 小说dao
  */
-public interface NovelDao extends PagingAndSortingRepository<NovelEntity, Integer>,JpaSpecificationExecutor<NovelEntity> {
+public interface NovelDao extends PagingAndSortingRepository<NovelEntity, Integer>, JpaSpecificationExecutor<NovelEntity> {
+
+    /**
+     * 根据小说编号获取小说
+     *
+     * @param novelCode 小说编号
+     * @return 信息
+     */
+    NovelEntity findTopByNovelCodeEquals(String novelCode);
 }

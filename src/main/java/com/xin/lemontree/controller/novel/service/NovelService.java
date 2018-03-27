@@ -75,4 +75,12 @@ public interface NovelService {
      * @return 信息
      */
     NovelChapterVo getNovelChapter(Integer id);
+
+    /**
+     * 获取小说
+     *
+     * @param novelCode 小说编号
+     * @return 信息
+     */
+    NovelVo getNovel(String novelCode);
 }

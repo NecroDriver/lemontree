@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  * @description
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserAction extends BaseAction {
 
     /**

@@ -325,7 +325,7 @@
 
     function getNovelPage(pageNo, pageSize, orderType) {
         $.ajax({
-            url: "/novel/page/" + pageNo,
+            url: "/api/novel/page/" + pageNo,
             type: "post",
             data: {
                 pageSize: pageSize,
