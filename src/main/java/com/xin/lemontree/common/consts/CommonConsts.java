@@ -8,13 +8,23 @@ package com.xin.lemontree.common.consts;
  */
 public final class CommonConsts {
 
-    /*----------------------------------------------------是否删除-------------------------------------------------------*/
+    /*---------------------------------------------------- 是否删除 -------------------------------------------------------*/
     /**
      * 0：否
      */
-    public static final Integer FLAG_DELETE_NO = 0;
+    public static final int FLAG_DELETE_NO = 0;
     /**
      * 1：是
      */
-    public static final Integer FLAG_DELETE_YES = 1;
+    public static final int FLAG_DELETE_YES = 1;
+
+    /*---------------------------------------------------- 是否更新 -------------------------------------------------------*/
+    /**
+     * 0：否
+     */
+    public static final int FLAG_UPDATE_NO = 0;
+    /**
+     * 1：是
+     */
+    public static final int FLAG_UPDATE_YES = 1;
 }

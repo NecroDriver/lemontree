@@ -12,7 +12,7 @@
 
         .container {
             padding: 0;
-            width: 100%;
+            width: 98%;
         }
 
         .row-header {
@@ -74,7 +74,8 @@
                         </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right" style="margin-right: 0">
-                        <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> 登出</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#loginOutModal"><span
+                                class="glyphicon glyphicon-log-out"></span> 登出</a></li>
                     </ul>
                 </div>
             </nav>
@@ -170,6 +171,25 @@
         </div>
     </div>
 </div>
+<!-- 模态框（modal） -->
+<div class="modal fade" id="loginOutModal" tabindex="-1" role="dialog" aria-labelledby="loginOutModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="loginOutModalLabel">信息</h4>
+            </div>
+            <div class="modal-body">
+                确认退出？
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="loginOut()">退出</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -206,6 +226,22 @@
                 window.location.href = "/login.html";
             }
         });
+    }
+
+    function loginOut() {
+        $.ajax({
+            url: "/api/user/loginOut",
+            type: "post",
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                window.location.href = "/login.html";
+            },
+            error: function (XMLHttpRequest) {
+                console.log(XMLHttpRequest);
+            }
+        })
     }
 </script>
 </html>

@@ -8,7 +8,7 @@
 </head>
 <style>
     .container {
-        width: 100%;
+        width: 98%;
     }
 
     .row-header {
@@ -29,9 +29,13 @@
     </div>
     <div class="row">
         <ul class="pager">
-            <li class="chapter" id="prev"><a href="#"><span class="glyphicon glyphicon-arrow-left"></span> 上一章</a></li>
+            <li class="chapter" id="prev"><a href="javascript:void(0)">
+                <span class="glyphicon glyphicon-arrow-left"></span> 上一章</a>
+            </li>
             <li class="chapterMenu"><a href="#"><span class="glyphicon glyphicon-list"></span> 目录</a></li>
-            <li class="chapter" id="next"><a href="#">下一章 <span class="glyphicon glyphicon-arrow-right"></span></a></li>
+            <li class="chapter" id="next"><a href="javascript:void(0)">
+                下一章 <span class="glyphicon glyphicon-arrow-right"></span></a>
+            </li>
         </ul>
     </div>
 </div>
@@ -44,8 +48,12 @@
     $(function () {
         getNovelChapter();
         $(".chapter").click(function () {
-            id = $(this).attr("chapterId");
-            getNovelChapter();
+            if ($(this).hasClass("disabled")) {
+
+            } else {
+                id = $(this).attr("chapterId");
+                getNovelChapter();
+            }
         });
     })
 
@@ -59,8 +67,18 @@
                 var content = data.data;
                 $("#title").text(content.chapterName);
                 $("#content").text(content.content);
-                $("#prev").attr("chapterId", content.prevId);
-                $("#next").attr("chapterId", content.nextId);
+                if (content.prevId == null) {
+                    $("#prev").addClass("disabled");
+                } else {
+                    $("#prev").removeClass("disabled");
+                    $("#prev").attr("chapterId", content.prevId);
+                }
+                if (content.nextId == null) {
+                    $("#next").addClass("disabled");
+                } else {
+                    $("#next").removeClass("disabled");
+                    $("#next").attr("chapterId", content.nextId);
+                }
                 $(".chapterMenu").find("a").attr("href", "list.html?novelCode=" + content.novelCode);
             },
             error: function (XMLHttpRequest) {

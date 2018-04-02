@@ -83,4 +83,11 @@ public interface NovelService {
      * @return 信息
      */
     NovelVo getNovel(String novelCode);
+
+    /**
+     * 定时抓取更新章节
+     *
+     * @return 更新章节数
+     */
+    Integer updateNovels();
 }

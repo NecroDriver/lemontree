@@ -35,7 +35,8 @@ public class RequestAdapter extends WebMvcConfigurerAdapter {
                 .excludePathPatterns("/login")
                 .excludePathPatterns("/websocket")
                 .excludePathPatterns("/mywebsocket")
-                .excludePathPatterns("/user/**");
+                .excludePathPatterns("/api/user/**")
+                .excludePathPatterns("/api/novel/spider/**");
     }
 
     @Override

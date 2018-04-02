@@ -39,9 +39,9 @@ public interface UserLoginService {
     /**
      * 登出
      *
-     * @param token 口令
+     * @param request 请求
      */
-    void loginout(String token);
+    void loginOut(HttpServletRequest request);
 
     /**
      * 根据口令获取用户信息

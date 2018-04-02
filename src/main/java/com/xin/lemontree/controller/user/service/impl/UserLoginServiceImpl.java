@@ -126,10 +126,11 @@ public class UserLoginServiceImpl implements UserLoginService {
     /**
      * 登出
      *
-     * @param token 口令
+     * @param request 请求
      */
     @Override
-    public void loginout(String token) {
+    public void loginOut(HttpServletRequest request) {
+        String token = CookieUtils.getCookieValue(request, SysConfig.COOKIE_NAME);
         ValueOperations<String, String> operations = stringRedisTemplate.opsForValue();
         operations.getOperations().delete(SysConfig.REDIS_USER_SESSION_KEY + token);
     }

@@ -1,11 +1,13 @@
 package com.xin.lemontree.controller.novel.service.impl;
 
 import com.xin.lemontree.common.base.BaseService;
+import com.xin.lemontree.common.consts.CommonConsts;
 import com.xin.lemontree.common.consts.SysConfig;
 import com.xin.lemontree.controller.novel.service.NovelService;
 import com.xin.lemontree.dao.novel.NovelChapterDao;
 import com.xin.lemontree.dao.novel.NovelDao;
-import com.xin.lemontree.dao.novel.NovelSpecification;
+import com.xin.lemontree.dao.novel.specification.NovelChapterSpecification;
+import com.xin.lemontree.dao.novel.specification.NovelSpecification;
 import com.xin.lemontree.entity.novel.NovelChapterEntity;
 import com.xin.lemontree.entity.novel.NovelEntity;
 import com.xin.lemontree.tools.convert.ConvertUtils;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
@@ -196,9 +199,10 @@ public class NovelServiceImpl extends BaseService implements NovelService {
         Sort.Order idOrder = new Sort.Order(orderType.equals(0) ? Sort.Direction.DESC : Sort.Direction.ASC, "id");
         Sort sort = new Sort(idOrder);
         PageRequest pageRequest = new PageRequest(pageNo - 1, pageSize, sort);
+        Specification<NovelChapterEntity> specification = NovelChapterSpecification.selectByNovleCode(novelCode);
 
         /*------------------------------------------- 业务处理 ------------------------------------------*/
-        Page<NovelChapterEntity> novelChapterEntityPage = novelChapterDao.findAll(pageRequest);
+        Page<NovelChapterEntity> novelChapterEntityPage = novelChapterDao.findAll(specification, pageRequest);
         Page<NovelChapterVo> novelChapterVoPage = novelChapterEntityPage.map(novelChapterEntity -> ConvertUtils.convert(novelChapterEntity, NovelChapterVo.class));
 
         /*------------------------------------------- 日志记录 ------------------------------------------*/
@@ -279,5 +283,32 @@ public class NovelServiceImpl extends BaseService implements NovelService {
 
         /*------------------------------------------- 方法返回 ------------------------------------------*/
         return novelVo;
+    }
+
+    /**
+     * 定时抓取更新章节
+     *
+     * @return 更新章节数
+     */
+    @Override
+    public Integer updateNovels() {
+
+        /*------------------------------------------- 参数声明 ------------------------------------------*/
+        Integer total = 0;
+
+        /*------------------------------------------- 业务处理 ------------------------------------------*/
+        // 获取所有的小说列表
+        List<NovelEntity> novelEntityList = novelDao.findAll(NovelSpecification.selectList());
+        for (NovelEntity novelEntity : novelEntityList) {
+            // 获取更新数据
+            List<NovelChapterEntity> novelChapterEntityList = spiderUpdatedNovelList(novelEntity.getNovelCode());
+            // 使用websocket通知更新 TODO
+            if (novelChapterEntityList.size() > 0) {
+                // 更新数据库相关字段
+                novelDao.updateFlagUpdate(novelEntity.getNovelCode(), CommonConsts.FLAG_UPDATE_YES);
+                total += novelChapterEntityList.size();
+            }
+        }
+        return total;
     }
 }

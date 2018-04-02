@@ -1,4 +1,4 @@
-package com.xin.lemontree.dao.novel;
+package com.xin.lemontree.dao.novel.specification;
 
 import com.xin.lemontree.common.consts.CommonConsts;
 import com.xin.lemontree.entity.novel.NovelEntity;
@@ -16,8 +16,8 @@ public class NovelSpecification {
 
     public static Specification<NovelEntity> selectList() {
         return (root, criteriaQuery, criteriaBuilder) -> {
-            Path<Integer> flagDelete = root.get("flagDelete");
-            return criteriaBuilder.equal(flagDelete, CommonConsts.FLAG_DELETE_NO);
+            Path<Integer> flagDeletePath = root.get("flagDelete");
+            return criteriaBuilder.equal(flagDeletePath, CommonConsts.FLAG_DELETE_NO);
         };
     }
 }

@@ -48,12 +48,11 @@ public class UserAction extends BaseAction {
     /**
      * 登出
      *
-     * @param token
      * @return
      */
-    @RequestMapping(value = "/loginout/{token}", method = RequestMethod.POST)
-    public ResultVo loginout(@PathVariable("token") String token) {
-        userLoginService.loginout(token);
+    @RequestMapping(value = "/loginOut", method = RequestMethod.POST)
+    public ResultVo loginOut() {
+        userLoginService.loginOut(request);
         return ResultVo.newResultVo(true, "退出成功！", null);
     }
 
