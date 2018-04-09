@@ -188,4 +188,10 @@ public class NovelAction extends BaseAction {
         /*-------------------------------------------- 方法返回 ------------------------------------------------------*/
         return ResultVo.successVo(novelVo);
     }
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultVo addNovel() {
+        return null;
+    }
 }

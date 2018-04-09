@@ -20,6 +20,10 @@
             margin: 2% 0 1% 0;
         }
 
+        .row-footer {
+            margin: -1% 0 0.5% 0;
+        }
+
         #novel .thumbnail:hover {
             cursor: pointer;
         }
@@ -32,6 +36,10 @@
         #novel .thumbnail .caption {
             height: 205px;
             overflow: hidden;
+        }
+
+        .right {
+            float: right;
         }
     </style>
 </head>
@@ -131,7 +139,9 @@
     <!-- 缩略图 -->
     <div class="row clearfix" id="novel" style="background-color:#eae3df">
         <div class="col-md-12 col-lg-12 row-header">
-            <h3><span class="glyphicon glyphicon-book"></span> novel</h3>
+            <h3>
+                <span class="glyphicon glyphicon-book"></span> novel
+            </h3>
         </div>
         <div class="col-md-3 col-lg-3">
             <div class="thumbnail">
@@ -169,6 +179,11 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-12 col-lg-12 row-footer">
+            <button class="btn btn-primary btn-sm right" data-toggle="modal" data-target="#novelModal"><span
+                    class="glyphicon glyphicon-plus"></span> 添加书籍
+            </button>
+        </div>
     </div>
 </div>
 <!-- 模态框（modal） -->
@@ -185,6 +200,57 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" onclick="loginOut()">退出</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 模态框（modal） -->
+<div class="modal fade" id="novelModal" tabindex="-1" role="dialog" aria-labelledby="novelModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="novelModalLabel">添加书籍</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form" class="form-horizontal">
+                    <div class="form-group">
+                        <label for="novelName" class="col-md-2 control-label">小说名称</label>
+                        <div class="col-md-10"><input type="text" class="form-control" id="novelName"/></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="novelCode" class="col-md-2 control-label">小说编号</label>
+                        <div class="col-md-10"><input type="text" class="form-control" id="novelCode"/></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="url" class="col-md-2 control-label">小说地址</label>
+                        <div class="col-md-10"><input type="text" class="form-control" id="url"/></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="coverImg" class="col-md-2 control-label">封面地址</label>
+                        <div class="col-md-10"><input type="text" class="form-control" id="coverImg"/></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="flagEnd" class="col-md-2 control-label">是否完结</label>
+                        <div class="col-md-10" id="flagEnd">
+                            <input type="radio" name="flagEnd" value="1" checked="checked"/> 是
+                            <input type="radio" name="flagEnd" value="0"/> 否
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="description" class="col-md-2 control-label">小说简介</label>
+                        <div class="col-md-10">
+                            <textarea class="form-control" id="description" rows="3"></textarea>
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="addNovel()">确认</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
             </div>
         </div>
@@ -242,6 +308,31 @@
                 console.log(XMLHttpRequest);
             }
         })
+    }
+
+    function addNovel() {
+        var novelName = $("#novelName").val();
+        var novelCode = $("#novelCode").val();
+        var url = $("#url").val();
+        var coverImg = $("#coverImg").val();
+        var flagEnd = $("input[name='flagEnd'] :checked").val();
+        var description = $("#description").text();
+        $.ajax({
+            url: "/api/novel/add",
+            type: "post",
+            dataType: "json",
+            data: {
+                novelName: novelName,
+                novelCode: novelCode,
+                url: url,
+                coverImg: coverImg,
+                falgEnd: flagEnd,
+                description: description
+            },
+            success: function (data) {
+                console.log(data);
+            }
+        });
     }
 </script>
 </html>
