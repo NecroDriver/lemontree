@@ -315,8 +315,8 @@
         var novelCode = $("#novelCode").val();
         var url = $("#url").val();
         var coverImg = $("#coverImg").val();
-        var flagEnd = $("input[name='flagEnd'] :checked").val();
-        var description = $("#description").text();
+        var flagEnd = $("input[name='flagEnd']:checked").val();
+        var description = $("#description").val();
         $.ajax({
             url: "/api/novel/add",
             type: "post",
@@ -326,7 +326,7 @@
                 novelCode: novelCode,
                 url: url,
                 coverImg: coverImg,
-                falgEnd: flagEnd,
+                flagEnd: flagEnd,
                 description: description
             },
             success: function (data) {

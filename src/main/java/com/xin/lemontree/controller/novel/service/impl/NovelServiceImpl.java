@@ -335,6 +335,7 @@ public class NovelServiceImpl extends BaseService implements NovelService {
         novelEntity.setNovelName(novelName);
         novelEntity.setNovelCode(novelCode);
         novelEntity.setUrl(url);
+        novelEntity.setCoverImg(coverImg);
         novelEntity.setFlagDelete(CommonConsts.FLAG_DELETE_NO);
         novelEntity.setFlagUpdate(CommonConsts.FLAG_UPDATE_NO);
         novelEntity.setFlagEnd(flagEnd);
