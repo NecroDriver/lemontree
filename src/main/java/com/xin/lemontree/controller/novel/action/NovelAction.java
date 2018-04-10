@@ -189,9 +189,28 @@ public class NovelAction extends BaseAction {
         return ResultVo.successVo(novelVo);
     }
 
+    /**
+     * 添加小说
+     *
+     * @param novelName   小说名称
+     * @param novelCode   小说编号
+     * @param url         url
+     * @param coverImg    封面路径
+     * @param flagEnd     是否完结
+     * @param description 简介
+     * @return 结果
+     */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
-    public ResultVo addNovel() {
-        return null;
+    public ResultVo addNovel(String novelName, String novelCode, String url, String coverImg, Integer flagEnd, String description) {
+
+        /*-------------------------------------------- 日志记录 ------------------------------------------------------*/
+        logger.debug("添加小说");
+
+        /*-------------------------------------------- 业务处理 ------------------------------------------------------*/
+        Integer id = novelService.addNovel(novelName, novelCode, url, coverImg, flagEnd, description);
+
+        /*-------------------------------------------- 方法返回 ------------------------------------------------------*/
+        return ResultVo.successVo(id);
     }
 }

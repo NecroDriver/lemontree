@@ -309,6 +309,45 @@ public class NovelServiceImpl extends BaseService implements NovelService {
                 total += novelChapterEntityList.size();
             }
         }
+
+        /*------------------------------------------- 方法返回 ------------------------------------------*/
         return total;
+    }
+
+    /**
+     * 添加小说
+     *
+     * @param novelName   小说名称
+     * @param novelCode   小说编号
+     * @param url         url
+     * @param coverImg    封面路径
+     * @param flagEnd     是否完结
+     * @param description 简介
+     * @return 结果
+     */
+    @Override
+    public Integer addNovel(String novelName, String novelCode, String url, String coverImg, Integer flagEnd, String description) {
+
+        /*------------------------------------------- 参数声明 ------------------------------------------*/
+
+        /*------------------------------------------- 业务处理 ------------------------------------------*/
+        NovelEntity novelEntity = new NovelEntity();
+        novelEntity.setNovelName(novelName);
+        novelEntity.setNovelCode(novelCode);
+        novelEntity.setUrl(url);
+        novelEntity.setFlagDelete(CommonConsts.FLAG_DELETE_NO);
+        novelEntity.setFlagUpdate(CommonConsts.FLAG_UPDATE_NO);
+        novelEntity.setFlagEnd(flagEnd);
+        novelEntity.setDescription(description);
+        novelEntity.setCreateTime(new Date());
+        novelEntity.setCreator("init");
+        novelEntity.setCreatorIP("127.0.0.1");
+        novelEntity.setModifyTime(new Date());
+        novelEntity.setModifier("init");
+        novelEntity.setModifierIP("127.0.0.1");
+        novelDao.save(novelEntity);
+
+        /*------------------------------------------- 方法返回 ------------------------------------------*/
+        return novelEntity.getId();
     }
 }

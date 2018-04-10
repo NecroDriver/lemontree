@@ -90,4 +90,17 @@ public interface NovelService {
      * @return 更新章节数
      */
     Integer updateNovels();
+
+    /**
+     * 添加小说
+     *
+     * @param novelName   小说名称
+     * @param novelCode   小说编号
+     * @param url         url
+     * @param coverImg    封面路径
+     * @param flagEnd     是否完结
+     * @param description 简介
+     * @return 结果
+     */
+    Integer addNovel(String novelName, String novelCode, String url, String coverImg, Integer flagEnd, String description);
 }
