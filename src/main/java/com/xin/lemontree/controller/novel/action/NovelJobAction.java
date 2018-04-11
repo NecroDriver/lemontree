@@ -1,8 +1,8 @@
 package com.xin.lemontree.controller.novel.action;
 
 import com.xin.lemontree.common.base.BaseAction;
+import com.xin.lemontree.common.consts.SysConfig;
 import com.xin.lemontree.controller.novel.service.NovelService;
-import com.xin.lemontree.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -36,14 +36,15 @@ public class NovelJobAction extends BaseAction {
     @RequestMapping(value = "/novels/update")
     @ResponseBody
     public void updateNovels() {
+        if (SysConfig.FLAG_SPIDER) {
+            /*--------------------------------------------- 日志记录 ----------------------------------------------*/
+            logger.debug("定时抓取更新章节");
 
-        /*--------------------------------------------- 日志记录 ----------------------------------------------*/
-        logger.debug("定时抓取更新章节");
+            /*--------------------------------------------- 业务处理 ----------------------------------------------*/
+            Integer num = novelService.updateNovels();
 
-        /*--------------------------------------------- 业务处理 ----------------------------------------------*/
-        Integer num = novelService.updateNovels();
-
-        /*--------------------------------------------- 日志记录 ----------------------------------------------*/
-        logger.debug("抓取章节数：" + num);
+            /*--------------------------------------------- 日志记录 ----------------------------------------------*/
+            logger.debug("抓取章节数：" + num);
+        }
     }
 }

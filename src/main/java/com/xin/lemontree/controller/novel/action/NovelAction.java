@@ -104,11 +104,12 @@ public class NovelAction extends BaseAction {
      * @param pageNo    当前页
      * @param pageSize  每页大小
      * @param orderType 排序类型
+     * @param keywords  关键字
      * @return 分页数据
      */
     @RequestMapping(value = "/{novelCode}/page/{pageNo}", method = RequestMethod.POST)
     @ResponseBody
-    public ResultVo getNovelChapterPage(@PathVariable("novelCode") String novelCode, @PathVariable("pageNo") Integer pageNo, Integer pageSize, Integer orderType) {
+    public ResultVo getNovelChapterPage(@PathVariable("novelCode") String novelCode, @PathVariable("pageNo") Integer pageNo, Integer pageSize, Integer orderType, String keywords) {
 
         /*-------------------------------------------- 日志记录 ------------------------------------------------------*/
         logger.debug("获取小说章节列表");
@@ -124,7 +125,7 @@ public class NovelAction extends BaseAction {
         }
 
         /*-------------------------------------------- 业务处理 ------------------------------------------------------*/
-        Page<NovelChapterVo> novelChapterVoPage = novelService.getNovelChapterPage(novelCode, pageNo, pageSize, orderType);
+        Page<NovelChapterVo> novelChapterVoPage = novelService.getNovelChapterPage(novelCode, pageNo, pageSize, orderType, keywords);
 
         /*-------------------------------------------- 方法返回 ------------------------------------------------------*/
         return ResultVo.successVo(novelChapterVoPage);

@@ -23,6 +23,17 @@
     .novel-name {
         display: inline-block;
     }
+
+    .fuzzy-query {
+        width: 180px;
+        display: inline-block;
+        margin-left: 5%;
+        margin-bottom: -8px;
+    }
+
+    .fuzzy-query:hover {
+        cursor: pointer;
+    }
 </style>
 <body>
 <div class="container">
@@ -30,7 +41,15 @@
         <div class="col-md-12 col-lg-12 column">
             <div>
                 <h3 class="novel-name">名称</h3>
-                <a class="btn btn-primary btn-sm pull-right" href="../main.html">
+                <div class="fuzzy-query">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="输入章节名称" value=""/>
+                        <span class="input-group-addon" onclick="search()"><span
+                                class="glyphicon glyphicon-search"></span></span>
+                    </div>
+                </div>
+                <a class="btn btn-primary btn-sm pull-right" href="../main.html"
+                   style="margin-top: 16px;margin-bottom: 10px;">
                     <span class="glyphicon glyphicon-home"></span> 主页
                 </a>
             </div>
@@ -64,32 +83,39 @@
 <script src="../js/common.js"></script>
 <script>
     var novelCode = getUrlValue("novelCode");
+    var chapterId = getUrlValue("chapterId");
+    // var pageNo = chapterId == null ? 1 : parseInt(chapterId);
     var pageNo = 1;
     var pageSize = 30;
     var orderType = 0;
+    var keywords = $(".fuzzy-query").find("input").val();
     $(function () {
         // 初始化
         getNovel(novelCode);
-        getNovelChapterPage(pageNo, pageSize, orderType);
+        getNovelChapterPage(pageNo, pageSize, orderType, keywords);
 
         // 监听上下页
         $("#pageFirst").click(function () {
-            getNovelChapterPage(pageNo, pageSize, orderType);
+            keywords = $(".fuzzy-query").find("input").val();
+            getNovelChapterPage(pageNo, pageSize, orderType, keywords);
         });
         $("#pageLast").click(function () {
             pageNo = $("#pageNum").find("strong").text();
-            getNovelChapterPage(pageNo, pageSize, orderType);
+            keywords = $(".fuzzy-query").find("input").val();
+            getNovelChapterPage(pageNo, pageSize, orderType, keywords);
         });
         $("#pagePrev").click(function () {
             pageNo = parseInt($(".pageNo.active").find("a").text());
             pageNo = pageNo > 1 ? pageNo - 1 : pageNo;
-            getNovelChapterPage(pageNo, pageSize, orderType);
+            keywords = $(".fuzzy-query").find("input").val();
+            getNovelChapterPage(pageNo, pageSize, orderType, keywords);
         });
         $("#pageNext").click(function () {
             pageNo = parseInt($(".pageNo.active").find("a").text());
             var pageNum = $("#pageNum").find("strong").text();
             pageNo = pageNo < pageNum ? pageNo + 1 : pageNum;
-            getNovelChapterPage(pageNo, pageSize, orderType);
+            keywords = $(".fuzzy-query").find("input").val();
+            getNovelChapterPage(pageNo, pageSize, orderType, keywords);
         });
     });
 
@@ -106,14 +132,15 @@
         })
     }
 
-    function getNovelChapterPage(pageNo, pageSize, orderType) {
+    function getNovelChapterPage(pageNo, pageSize, orderType, keywords) {
         $.ajax({
             url: "/api/novel/" + novelCode + "/page/" + pageNo,
             type: "post",
             dataType: "json",
             data: {
                 pageSize: pageSize,
-                orderType: orderType
+                orderType: orderType,
+                keywords: keywords
             },
             success: function (data) {
                 var page = data.data;
@@ -165,6 +192,12 @@
         $("#orderType").html('<span class="glyphicon glyphicon-sort"></span> ' + (orderType == 0 ? '正序' : '倒序'));
         pageNo = $(".pageNo.active").find("a").text();
         getNovelChapterPage(pageNo, pageSize, orderType);
+    }
+
+    // 模糊查询章节
+    function search() {
+        var keywords = $(".fuzzy-query").find("input").val();
+        getNovelChapterPage(pageNo, pageSize, orderType, keywords);
     }
 </script>
 </html>

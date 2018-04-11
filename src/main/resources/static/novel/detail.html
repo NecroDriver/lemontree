@@ -79,7 +79,7 @@
                     $("#next").removeClass("disabled");
                     $("#next").attr("chapterId", content.nextId);
                 }
-                $(".chapterMenu").find("a").attr("href", "list.html?novelCode=" + content.novelCode);
+                $(".chapterMenu").find("a").attr("href", "list.html?novelCode=" + content.novelCode + "&chapterId=" + id);
             },
             error: function (XMLHttpRequest) {
                 console.log(XMLHttpRequest);

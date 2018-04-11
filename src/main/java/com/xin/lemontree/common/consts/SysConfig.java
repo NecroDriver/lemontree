@@ -33,6 +33,11 @@ public final class SysConfig {
      */
     public static String NOVEL_BIQUGE_URL;
 
+    /**
+     * 是否抓取数据
+     */
+    public static boolean FLAG_SPIDER = false;
+
     static {
         loadFromProp();
     }
@@ -47,6 +52,7 @@ public final class SysConfig {
         COOKIE_NAME = propertiesUtils.getString("cookie.name");
         CSDN_WEEKLY_PREURL = propertiesUtils.getString("csdn.weekly.preurl");
         NOVEL_BIQUGE_URL = propertiesUtils.getString("novel.biquge.url");
+        FLAG_SPIDER = propertiesUtils.getBoolean("flagSpider");
         propertiesUtils.close();
     }
 }

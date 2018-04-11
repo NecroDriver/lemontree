@@ -57,9 +57,10 @@ public interface NovelService {
      * @param pageNo    当前页
      * @param pageSize  每页大小
      * @param orderType 排序类型
+     * @param keywords  关键字
      * @return 分页数据
      */
-    Page<NovelChapterVo> getNovelChapterPage(String novelCode, Integer pageNo, Integer pageSize, Integer orderType);
+    Page<NovelChapterVo> getNovelChapterPage(String novelCode, Integer pageNo, Integer pageSize, Integer orderType, String keywords);
 
     /**
      * 获取所有小说列表

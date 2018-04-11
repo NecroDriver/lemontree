@@ -190,16 +190,17 @@ public class NovelServiceImpl extends BaseService implements NovelService {
      * @param pageNo    当前页
      * @param pageSize  每页大小
      * @param orderType 排序类型
+     * @param keywords  关键字
      * @return 分页数据
      */
     @Override
-    public Page<NovelChapterVo> getNovelChapterPage(String novelCode, Integer pageNo, Integer pageSize, Integer orderType) {
+    public Page<NovelChapterVo> getNovelChapterPage(String novelCode, Integer pageNo, Integer pageSize, Integer orderType, String keywords) {
 
         /*------------------------------------------- 参数声明 ------------------------------------------*/
         Sort.Order idOrder = new Sort.Order(orderType.equals(0) ? Sort.Direction.DESC : Sort.Direction.ASC, "id");
         Sort sort = new Sort(idOrder);
         PageRequest pageRequest = new PageRequest(pageNo - 1, pageSize, sort);
-        Specification<NovelChapterEntity> specification = NovelChapterSpecification.selectByNovleCode(novelCode);
+        Specification<NovelChapterEntity> specification = NovelChapterSpecification.selectByNovleCode(novelCode, keywords);
 
         /*------------------------------------------- 业务处理 ------------------------------------------*/
         Page<NovelChapterEntity> novelChapterEntityPage = novelChapterDao.findAll(specification, pageRequest);
