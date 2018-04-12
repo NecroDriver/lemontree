@@ -22,6 +22,7 @@
 
         .row-footer {
             margin: -1% 0 0.5% 0;
+            text-align: center;
         }
 
         #novel .thumbnail:hover {
@@ -38,8 +39,9 @@
             overflow: hidden;
         }
 
-        .right {
-            float: right;
+        .pager {
+            display: inline-block;
+            margin-top: 0;
         }
     </style>
 </head>
@@ -141,6 +143,10 @@
         <div class="col-md-12 col-lg-12 row-header">
             <h3>
                 <span class="glyphicon glyphicon-book"></span> novel
+                <button class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#novelModal"
+                        style="margin-left: -5%;">
+                    <span class="glyphicon glyphicon-plus"></span> 添加书籍
+                </button>
             </h3>
         </div>
         <div class="col-md-3 col-lg-3">
@@ -180,9 +186,12 @@
             </div>
         </div>
         <div class="col-md-12 col-lg-12 row-footer">
-            <button class="btn btn-primary btn-sm right" data-toggle="modal" data-target="#novelModal"><span
-                    class="glyphicon glyphicon-plus"></span> 添加书籍
-            </button>
+            <ul class="pager">
+                <li class="novel-pager" id="prevNovels" style="margin-right: 30px;"><a
+                        href="javascript:void(0);">上一页</a></li>
+                <li class="novel-pager" id="nextNovels" style="margin-left: 30px;"><a href="javascript:void(0);">下一页</a>
+                </li>
+            </ul>
         </div>
     </div>
 </div>
@@ -260,16 +269,28 @@
 <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script>
-    $(function () {
-        getNovelPage(1, 4, 0);
+    var pageNo = 1;
+    var pageSize = 4;
+    var orderType = 0;
 
-        // 设置点击事件
+    $(function () {
+        getNovelPage();
+
+        // 设置缩略图点击事件
         $("#novel .thumbnail").click(function () {
             location.href = "novel/list.html?novelCode=" + $(this).find("img").attr("alt");
         });
+
+        // 设置分页点击事件
+        $(".novel-pager").not(".disabled").click(function () {
+            pageNo = $(this).attr("pageNo");
+            if (pageNo) {
+                getNovelPage();
+            }
+        });
     });
 
-    function getNovelPage(pageNo, pageSize, orderType) {
+    function getNovelPage() {
         $.ajax({
             url: "/api/novel/page/" + pageNo,
             type: "post",
@@ -279,17 +300,31 @@
                 orderType: orderType
             },
             success: function (data) {
-                var content = data.data.content;
+                var page = data.data;
+                var content = page.content;
                 $("#novel .thumbnail").each(function (index) {
                     $(this).find("img").attr("src", content[index].coverImg);
                     $(this).find("img").attr("alt", content[index].novelCode);
                     $(this).find("h3").text(content[index].novelName);
                     $(this).find("p").text(content[index].description);
                 });
+                // 上下页初始化
+                $("#prevNovels").removeClass("disabled");
+                $("#nextNovels").removeClass("disabled");
+                if (pageNo - 1 > 0) {
+                    $("#prevNovels").attr("pageNo", pageNo - 1);
+                } else {
+                    $("#prevNovels").addClass("disabled");
+                }
+                if (pageNo + 1 <= page.totalPages) {
+                    $("#nextNovels").attr("pageNo", pageNo + 1);
+                } else {
+                    $("#prevNovels").addClass("disabled");
+                }
             },
             error: function (XMLHttpRequest) {
                 console.log(XMLHttpRequest);
-                window.location.href = "/login.html";
+                // window.location.href = "/login.html";
             }
         });
     }

@@ -66,8 +66,9 @@ public class NovelServiceImpl extends BaseService implements NovelService {
 
         List<Map<String, Object>> results = new ArrayList<>();
         try {
+            int dispOrder = 0;
             List<NovelChapterEntity> novelChapterEntityList = JsoupUtils.getEntityList(SysConfig.NOVEL_BIQUGE_URL + novelCode, novelDocumentAnalyzer, NovelChapterEntity.class);
-            novelChapterEntityList.forEach(novelChapterEntity -> {
+            for (NovelChapterEntity novelChapterEntity : novelChapterEntityList) {
                 try {
                     Thread.sleep(500);
                     // 获取文章内容
@@ -77,13 +78,14 @@ public class NovelServiceImpl extends BaseService implements NovelService {
                     System.out.println("发生异常" + novelChapterEntity.getChapterName());
                 }
                 novelChapterEntity.setNovelCode(novelCode);
+                novelChapterEntity.setDispOrder(++dispOrder);
                 novelChapterEntity.setCreator("init");
                 novelChapterEntity.setCreateTime(new Date());
                 novelChapterEntity.setCreatorIP("127.0.0.1");
                 novelChapterEntity.setModifier("init");
                 novelChapterEntity.setModifyTime(new Date());
                 novelChapterEntity.setModifierIP("127.0.0.1");
-            });
+            }
             novelChapterDao.save(novelChapterEntityList);
         } catch (Exception e) {
             e.printStackTrace();
@@ -129,6 +131,7 @@ public class NovelServiceImpl extends BaseService implements NovelService {
         try {
             NovelChapterEntity newNovelChapterEntity = novelChapterDao.findTopByNovelCodeEqualsOrderByIdDesc(novelCode);
             Assert.notNull(newNovelChapterEntity, "未查询到最新章节！");
+            int dispOrder = newNovelChapterEntity.getDispOrder();
             List<NovelChapterEntity> novelChapterEntityList = JsoupUtils.getEntityList(SysConfig.NOVEL_BIQUGE_URL + novelCode, novelDocumentAnalyzer, NovelChapterEntity.class);
             for (int i = novelChapterEntityList.size() - 1; i >= 0; i--) {
                 NovelChapterEntity novelChapterEntity = novelChapterEntityList.get(i);
@@ -140,6 +143,7 @@ public class NovelServiceImpl extends BaseService implements NovelService {
                 Map<String, Object> contentMap = JsoupUtils.getMap(novelChapterEntity.getUrl(), novelDocumentAnalyzer);
                 novelChapterEntity.setContent(contentMap.get("content") + "");
                 novelChapterEntity.setNovelCode(novelCode);
+                novelChapterEntity.setDispOrder(++dispOrder);
                 novelChapterEntity.setCreator("init");
                 novelChapterEntity.setCreateTime(new Date());
                 novelChapterEntity.setCreatorIP("127.0.0.1");

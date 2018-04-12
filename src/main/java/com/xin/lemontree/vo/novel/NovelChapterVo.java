@@ -1,11 +1,8 @@
 package com.xin.lemontree.vo.novel;
 
-import com.xin.lemontree.common.base.BaseEntity;
 import com.xin.lemontree.common.base.BaseVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import javax.persistence.*;
 
 /**
  * @author creator 11934 2018/3/2 0002 17:16
@@ -51,4 +48,9 @@ public class NovelChapterVo extends BaseVo {
      * 下一章id
      */
     private Integer nextId;
+
+    /**
+     * 展示顺序
+     */
+    private Integer dispOrder;
 }

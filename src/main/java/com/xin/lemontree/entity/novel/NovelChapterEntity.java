@@ -3,7 +3,6 @@ package com.xin.lemontree.entity.novel;
 import com.xin.lemontree.common.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 
@@ -46,4 +45,8 @@ public class NovelChapterEntity extends BaseEntity {
      */
     private String content;
 
+    /**
+     * 展示顺序
+     */
+    private Integer dispOrder;
 }

@@ -1,7 +1,5 @@
 package com.xin.lemontree;
 
-import org.springframework.util.DigestUtils;
-
 public class LemontreeApplicationTests {
 
 	public static void main(String[] args) {
@@ -28,5 +26,9 @@ public class LemontreeApplicationTests {
 	public static void sayHello(Object object){
 		System.out.println(object);
 		System.out.println(object + "123");
+
+		int pageSize = 30;
+		int dispOrder = 20;
+		System.out.println(dispOrder/pageSize + 1);
     }
 }

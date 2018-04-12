@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta name="viewport" charset="UTF-8" content="width:device-width,initial-scale=1.0">
+    <meta name="viewport" charset="UTF-8" content="width=device-width,initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <title>章节内容</title>
@@ -14,6 +14,12 @@
     .row-header {
         text-align: center;
         margin: 2% 0 1% 0;
+    }
+
+    body {
+        background-color: #90af83;
+        font-size: 16px;
+        line-height: 1.8;
     }
 </style>
 <body>
@@ -52,6 +58,7 @@
 
             } else {
                 id = $(this).attr("chapterId");
+                console.log(id);
                 getNovelChapter();
             }
         });
@@ -79,11 +86,11 @@
                     $("#next").removeClass("disabled");
                     $("#next").attr("chapterId", content.nextId);
                 }
-                $(".chapterMenu").find("a").attr("href", "list.html?novelCode=" + content.novelCode + "&chapterId=" + id);
+                $(".chapterMenu").find("a").attr("href", "list.html?novelCode=" + content.novelCode + "&dispOrder=" + content.dispOrder);
             },
             error: function (XMLHttpRequest) {
                 console.log(XMLHttpRequest);
-                location.href = "../login.html";
+                // location.href = "../login.html";
             }
         })
     }
