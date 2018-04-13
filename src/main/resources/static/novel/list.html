@@ -67,8 +67,9 @@
             </div>
             <ul class="pagination">
                 <li id="pageFirst"><a href="#">&laquo;</a></li>
-                <li id="pagePrev"><a href="#">Prev</a></li>
-                <li id="pageNext"><a href="#">Next</a></li>
+                <li id="pagePrev"><a href="#"><</a></li>
+                <li id="pageNum" class="disabled"><a href="#">共<strong></strong>页</a></li>
+                <li id="pageNext"><a href="#">></a></li>
                 <li id="pageLast"><a href="#">&raquo;</a></li>
             </ul>
         </div>
@@ -158,7 +159,7 @@
             },
             error: function (XMLHttpRequest) {
                 console.log(XMLHttpRequest);
-                // location.href = "../login.html";
+                location.href = "../login.html";
             }
         })
     }
@@ -172,7 +173,7 @@
         } else {
             $("#pagePrev").after(getPaginationHtml(pageNo - pageSpace, pageNo + pageSpace));
         }
-        $("#pageNext").before('<li id="pageNum" class="disabled"><a href="#">共<strong>' + pageNum + '</strong>页</a></li>');
+        $("#pageNum").find("strong").text(pageNum);
         $("#pageNo" + pageNo).addClass("active");
     }
 

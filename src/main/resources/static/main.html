@@ -282,10 +282,12 @@
         });
 
         // 设置分页点击事件
-        $(".novel-pager").not(".disabled").click(function () {
-            pageNo = $(this).attr("pageNo");
-            if (pageNo) {
-                getNovelPage();
+        $(".novel-pager").click(function () {
+            if (!$(this).hasClass("disabled")) {
+                pageNo = parseInt($(this).attr("pageNo"));
+                if (pageNo) {
+                    getNovelPage();
+                }
             }
         });
     });
@@ -303,10 +305,12 @@
                 var page = data.data;
                 var content = page.content;
                 $("#novel .thumbnail").each(function (index) {
-                    $(this).find("img").attr("src", content[index].coverImg);
-                    $(this).find("img").attr("alt", content[index].novelCode);
-                    $(this).find("h3").text(content[index].novelName);
-                    $(this).find("p").text(content[index].description);
+                    if (content[index]) {
+                        $(this).find("img").attr("src", content[index].coverImg);
+                        $(this).find("img").attr("alt", content[index].novelCode);
+                        $(this).find("h3").text(content[index].novelName);
+                        $(this).find("p").text(content[index].description);
+                    }
                 });
                 // 上下页初始化
                 $("#prevNovels").removeClass("disabled");
@@ -319,12 +323,12 @@
                 if (pageNo + 1 <= page.totalPages) {
                     $("#nextNovels").attr("pageNo", pageNo + 1);
                 } else {
-                    $("#prevNovels").addClass("disabled");
+                    $("#nextNovels").addClass("disabled");
                 }
             },
             error: function (XMLHttpRequest) {
                 console.log(XMLHttpRequest);
-                // window.location.href = "/login.html";
+                window.location.href = "/login.html";
             }
         });
     }
