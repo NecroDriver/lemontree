@@ -2,7 +2,6 @@ package com.xin.lemontree.controller.novel.service.impl;
 
 import com.xin.lemontree.common.base.BaseService;
 import com.xin.lemontree.common.consts.CommonConsts;
-import com.xin.lemontree.common.consts.SysConfig;
 import com.xin.lemontree.controller.novel.service.NovelService;
 import com.xin.lemontree.dao.novel.NovelChapterDao;
 import com.xin.lemontree.dao.novel.NovelDao;
@@ -66,8 +65,10 @@ public class NovelServiceImpl extends BaseService implements NovelService {
 
         List<Map<String, Object>> results = new ArrayList<>();
         try {
+            NovelEntity novelEntity = novelDao.findTopByNovelCodeEquals(novelCode);
+            Assert.notNull(novelEntity, "未查询到该小说！");
             int dispOrder = 0;
-            List<NovelChapterEntity> novelChapterEntityList = JsoupUtils.getEntityList(SysConfig.NOVEL_BIQUGE_URL + novelCode, novelDocumentAnalyzer, NovelChapterEntity.class);
+            List<NovelChapterEntity> novelChapterEntityList = JsoupUtils.getEntityList(novelEntity.getUrl(), novelDocumentAnalyzer, NovelChapterEntity.class);
             for (NovelChapterEntity novelChapterEntity : novelChapterEntityList) {
                 try {
                     Thread.sleep(500);
@@ -129,10 +130,12 @@ public class NovelServiceImpl extends BaseService implements NovelService {
 
         List<NovelChapterEntity> results = new ArrayList<>();
         try {
+            NovelEntity novelEntity = novelDao.findTopByNovelCodeEquals(novelCode);
+            Assert.notNull(novelEntity, "未查询到该小说！");
             NovelChapterEntity newNovelChapterEntity = novelChapterDao.findTopByNovelCodeEqualsOrderByIdDesc(novelCode);
             Assert.notNull(newNovelChapterEntity, "未查询到最新章节！");
             int dispOrder = newNovelChapterEntity.getDispOrder();
-            List<NovelChapterEntity> novelChapterEntityList = JsoupUtils.getEntityList(SysConfig.NOVEL_BIQUGE_URL + novelCode, novelDocumentAnalyzer, NovelChapterEntity.class);
+            List<NovelChapterEntity> novelChapterEntityList = JsoupUtils.getEntityList(novelEntity.getUrl(), novelDocumentAnalyzer, NovelChapterEntity.class);
             for (int i = novelChapterEntityList.size() - 1; i >= 0; i--) {
                 NovelChapterEntity novelChapterEntity = novelChapterEntityList.get(i);
                 if (novelChapterEntity.getChapterName().equals(newNovelChapterEntity.getChapterName())) {
