@@ -17,10 +17,15 @@ public class LabelVo extends BaseVo {
     /**
      * 主键
      */
-    private String id;
+    private Integer id;
     /**
      * 标签名称
      */
     private String labelName;
+
+    /**
+     * 是否删除，0：否 1：是
+     */
+    private Integer flagDelete;
 
 }

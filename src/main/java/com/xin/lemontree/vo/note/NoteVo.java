@@ -17,7 +17,7 @@ public class NoteVo extends BaseVo {
     /**
      * 主键
      */
-    private String id;
+    private Integer id;
     /**
      * 标题
      */
@@ -29,6 +29,11 @@ public class NoteVo extends BaseVo {
     /**
      * 标签id
      */
-    private String labelId;
+    private Integer labelId;
+
+    /**
+     * 是否删除，0：否 1：是
+     */
+    private Integer flagDelete;
 
 }

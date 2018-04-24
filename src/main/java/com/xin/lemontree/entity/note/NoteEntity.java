@@ -25,18 +25,25 @@ public class NoteEntity extends BaseEntity implements Serializable {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private Integer id;
     /**
      * 标题
      */
     private String title;
+
     /**
      * 内容
      */
     private String content;
+
     /**
      * 标签id
      */
-    private String labelId;
+    private Integer labelId;
+
+    /**
+     * 是否删除，0：否 1：是
+     */
+    private Integer flagDelete;
 
 }

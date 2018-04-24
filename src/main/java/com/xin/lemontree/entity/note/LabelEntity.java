@@ -25,10 +25,16 @@ public class LabelEntity extends BaseEntity implements Serializable {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private Integer id;
+
     /**
      * 标签名称
      */
     private String labelName;
+
+    /**
+     * 是否删除，0：否 1：是
+     */
+    private Integer flagDelete;
 
 }
