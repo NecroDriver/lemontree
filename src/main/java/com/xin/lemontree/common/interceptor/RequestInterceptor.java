@@ -3,6 +3,7 @@ package com.xin.lemontree.common.interceptor;
 import com.xin.lemontree.common.consts.SysConfig;
 import com.xin.lemontree.controller.user.service.UserLoginService;
 import com.xin.lemontree.tools.cookie.CookieUtils;
+import com.xin.lemontree.tools.request.RequestUtils;
 import com.xin.lemontree.vo.UserLoginVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,6 +40,7 @@ public class RequestInterceptor implements HandlerInterceptor {
         if (!StringUtils.isEmpty(token)) {
             UserLoginVo userLoginVo = userLoginService.queryUserByToken(token);
             if (!ObjectUtils.isEmpty(userLoginVo)) {
+                userLoginVo.setIp(RequestUtils.getIPAddress(request));
                 // 把用户信息放入request
                 request.setAttribute("user", userLoginVo);
                 return true;
