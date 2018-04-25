@@ -1,6 +1,7 @@
 package com.xin.lemontree.controller.note.service;
 
 import com.xin.lemontree.vo.note.LabelVo;
+import com.xin.lemontree.vo.note.NoteVo;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -38,4 +39,24 @@ public interface INoteService {
      * @return 列表
      */
     List<LabelVo> getLabelList();
+
+    /**
+     * 保存笔记
+     *
+     * @param request 请求
+     * @param title   标题
+     * @param content 内容
+     * @param labelId 标签id
+     * @return 结果
+     */
+    Map<String, Object> saveNoteInfo(HttpServletRequest request, String title, String content, Integer labelId);
+
+    /**
+     * 获取笔记列表
+     *
+     * @param request 请求
+     * @param keyword 关键字
+     * @return 列表
+     */
+    List<NoteVo> getNotePage(HttpServletRequest request, String keyword);
 }

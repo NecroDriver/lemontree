@@ -4,6 +4,7 @@ import com.xin.lemontree.common.base.BaseAction;
 import com.xin.lemontree.controller.note.service.INoteService;
 import com.xin.lemontree.vo.ResultVo;
 import com.xin.lemontree.vo.note.LabelVo;
+import com.xin.lemontree.vo.note.NoteVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -93,5 +94,52 @@ public class NoteAction extends BaseAction {
 
         /*----------------------------------------------- 方法返回 --------------------------------------------------*/
         return ResultVo.successVo(labelList);
+    }
+
+    /**
+     * 新增笔记
+     *
+     * @param title   标题
+     * @param content 内容
+     * @param labelId 标签id
+     * @return 结果
+     */
+    @RequestMapping(value = "/saveNoteInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultVo saveNoteInfo(String title, String content, Integer labelId) {
+
+        /*----------------------------------------------- 日志记录 --------------------------------------------------*/
+        logger.debug("新增笔记");
+
+        /*----------------------------------------------- 参数校验 --------------------------------------------------*/
+        validateNotEmpty(title, "标题不能为空！");
+        validateNotEmpty(content, "内容不能为空！");
+        validateInteger(labelId, "关联标签不能为空！");
+
+        /*----------------------------------------------- 业务处理 --------------------------------------------------*/
+        Map<String, Object> resultMap = noteService.saveNoteInfo(request, title, content, labelId);
+
+        /*----------------------------------------------- 方法返回 --------------------------------------------------*/
+        return ResultVo.successVo(resultMap);
+    }
+
+    /**
+     * 获取笔记列表
+     *
+     * @param keyword 关键字
+     * @return 列表
+     */
+    @RequestMapping(value = "/getNotePage", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultVo getNotePage(String keyword) {
+
+        /*----------------------------------------------- 日志记录 --------------------------------------------------*/
+        logger.debug("获取笔记列表");
+
+        /*----------------------------------------------- 业务处理 ----------------------------------------------*/
+        List<NoteVo> noteList = noteService.getNotePage(request, keyword);
+
+        /*----------------------------------------------- 方法返回 --------------------------------------------------*/
+        return ResultVo.successVo(noteList);
     }
 }

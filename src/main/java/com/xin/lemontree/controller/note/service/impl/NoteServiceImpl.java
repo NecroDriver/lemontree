@@ -6,9 +6,11 @@ import com.xin.lemontree.controller.note.service.INoteService;
 import com.xin.lemontree.dao.note.LabelDao;
 import com.xin.lemontree.dao.note.NoteDao;
 import com.xin.lemontree.entity.note.LabelEntity;
+import com.xin.lemontree.entity.note.NoteEntity;
 import com.xin.lemontree.tools.convert.ConvertUtils;
 import com.xin.lemontree.vo.UserLoginVo;
 import com.xin.lemontree.vo.note.LabelVo;
+import com.xin.lemontree.vo.note.NoteVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -125,5 +127,67 @@ public class NoteServiceImpl extends BaseService implements INoteService {
 
         /*----------------------------------------------- 方法返回 --------------------------------------------------*/
         return labelVos;
+    }
+
+    /**
+     * 保存笔记
+     *
+     * @param request 请求
+     * @param title   标题
+     * @param content 内容
+     * @param labelId 标签id
+     * @return 结果
+     */
+    @Override
+    public Map<String, Object> saveNoteInfo(HttpServletRequest request, String title, String content, Integer labelId) {
+
+        /*----------------------------------------------- 参数声明 --------------------------------------------------*/
+        Map<String, Object> resultMap = new HashMap<>();
+        UserLoginVo user = (UserLoginVo) request.getAttribute("user");
+        Date nowDate = new Date();
+
+        /*----------------------------------------------- 业务处理 --------------------------------------------------*/
+        NoteEntity noteEntity = new NoteEntity();
+        noteEntity.setTitle(title);
+        noteEntity.setContent(content);
+        noteEntity.setLabelId(labelId);
+        noteEntity.setFlagDelete(CommonConsts.FLAG_DELETE_NO);
+        noteEntity.setCreateTime(nowDate);
+        noteEntity.setCreator(user.getAccount());
+        noteEntity.setCreatorIP(user.getIp());
+        noteEntity.setModifyTime(nowDate);
+        noteEntity.setModifier(user.getAccount());
+        noteEntity.setModifierIP(user.getIp());
+        noteDao.save(noteEntity);
+        resultMap.put("insertId", noteEntity.getId());
+
+        /*----------------------------------------------- 日志记录 --------------------------------------------------*/
+        logger.debug("保存笔记成功！" + resultMap);
+
+        /*----------------------------------------------- 方法返回 --------------------------------------------------*/
+        return resultMap;
+    }
+
+    /**
+     * 获取笔记列表
+     *
+     * @param request 请求
+     * @param keyword 关键字
+     * @return 列表
+     */
+    @Override
+    public List<NoteVo> getNotePage(HttpServletRequest request, String keyword) {
+
+        /*----------------------------------------------- 参数声明 --------------------------------------------------*/
+
+
+        /*----------------------------------------------- 业务处理 --------------------------------------------------*/
+
+
+        /*----------------------------------------------- 日志记录 --------------------------------------------------*/
+        logger.debug("获取笔记列表成功！");
+
+        /*----------------------------------------------- 方法返回 --------------------------------------------------*/
+        return null;
     }
 }

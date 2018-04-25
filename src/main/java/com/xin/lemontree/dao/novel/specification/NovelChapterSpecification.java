@@ -14,12 +14,12 @@ import javax.persistence.criteria.Path;
  */
 public class NovelChapterSpecification {
 
-    public static Specification<NovelChapterEntity> selectByNovleCode(String novelCode, String keywords) {
+    public static Specification<NovelChapterEntity> selectByNovleCode(String novelCode, String keyword) {
         return (root, criteriaQuery, criteriaBuilder) -> {
             Path<String> novelCodePath = root.get("novelCode");
-            Path<String> keywordsPath = root.get("chapterName");
-            if (StringUtils.isNotEmpty(keywords)){
-                return criteriaBuilder.and(criteriaBuilder.equal(novelCodePath, novelCode), criteriaBuilder.like(keywordsPath, "%" + keywords + "%"));
+            if (StringUtils.isNotEmpty(keyword)){
+                Path<String> keywordPath = root.get("chapterName");
+                return criteriaBuilder.and(criteriaBuilder.equal(novelCodePath, novelCode), criteriaBuilder.like(keywordPath, "%" + keyword + "%"));
             }else{
                 return criteriaBuilder.equal(novelCodePath, novelCode);
             }
