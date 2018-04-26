@@ -2,14 +2,16 @@ package com.xin.lemontree.controller.note.action;
 
 import com.xin.lemontree.common.base.BaseAction;
 import com.xin.lemontree.controller.note.service.INoteService;
+import com.xin.lemontree.entity.note.NoteEntity;
+import com.xin.lemontree.tools.page.Pageable;
 import com.xin.lemontree.vo.ResultVo;
 import com.xin.lemontree.vo.note.LabelVo;
-import com.xin.lemontree.vo.note.NoteVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
@@ -20,7 +22,7 @@ import java.util.Map;
  * @version 1.0.0
  * @description 笔记action
  */
-@Controller
+@RestController
 @RequestMapping("/api/note")
 public class NoteAction extends BaseAction {
 
@@ -38,7 +40,6 @@ public class NoteAction extends BaseAction {
      * @return 结果
      */
     @RequestMapping(value = "/saveLabelInfo", method = RequestMethod.POST)
-    @ResponseBody
     public ResultVo saveLabelInfo(String labelName) {
 
         /*----------------------------------------------- 日志记录 --------------------------------------------------*/
@@ -61,7 +62,6 @@ public class NoteAction extends BaseAction {
      * @return 结果
      */
     @RequestMapping(value = "/deleteLabel", method = RequestMethod.POST)
-    @ResponseBody
     public ResultVo deleteLabel(Integer id) {
 
         /*----------------------------------------------- 日志记录 --------------------------------------------------*/
@@ -83,7 +83,6 @@ public class NoteAction extends BaseAction {
      * @return 列表
      */
     @RequestMapping(value = "/getLabelList", method = RequestMethod.POST)
-    @ResponseBody
     public ResultVo getLabelList() {
 
         /*----------------------------------------------- 日志记录 --------------------------------------------------*/
@@ -105,7 +104,6 @@ public class NoteAction extends BaseAction {
      * @return 结果
      */
     @RequestMapping(value = "/saveNoteInfo", method = RequestMethod.POST)
-    @ResponseBody
     public ResultVo saveNoteInfo(String title, String content, Integer labelId) {
 
         /*----------------------------------------------- 日志记录 --------------------------------------------------*/
@@ -124,22 +122,67 @@ public class NoteAction extends BaseAction {
     }
 
     /**
-     * 获取笔记列表
+     * 获取笔记分页
      *
-     * @param keyword 关键字
-     * @return 列表
+     * @param keyword  关键字
+     * @param pageable 分页
+     * @return 分页
      */
     @RequestMapping(value = "/getNotePage", method = RequestMethod.POST)
-    @ResponseBody
-    public ResultVo getNotePage(String keyword) {
+    public ResultVo getNotePage(String keyword, Pageable pageable) {
 
         /*----------------------------------------------- 日志记录 --------------------------------------------------*/
-        logger.debug("获取笔记列表");
+        logger.debug("获取笔记分页");
 
         /*----------------------------------------------- 业务处理 ----------------------------------------------*/
-        List<NoteVo> noteList = noteService.getNotePage(request, keyword);
+        Page<NoteEntity> noteEntityPage = noteService.getNotePage(request, keyword, pageable);
 
         /*----------------------------------------------- 方法返回 --------------------------------------------------*/
-        return ResultVo.successVo(noteList);
+        return ResultVo.successVo(noteEntityPage);
+    }
+
+
+    /**
+     * 获取单条笔记信息
+     *
+     * @param id 笔记id
+     * @return 信息
+     */
+    @RequestMapping(value = "/getNoteInfo/{id}", method = RequestMethod.POST)
+    public ResultVo getNoteInfo(@PathVariable("id") Integer id) {
+
+        /*----------------------------------------------- 日志记录 --------------------------------------------------*/
+        logger.debug("获取单条笔记信息");
+
+        /*----------------------------------------------- 参数检验 ----------------------------------------------*/
+        validateInteger(id, "笔记id不能为空！");
+
+        /*----------------------------------------------- 业务处理 ----------------------------------------------*/
+        NoteEntity noteEntity = noteService.getNoteInfo(id);
+
+        /*----------------------------------------------- 方法返回 --------------------------------------------------*/
+        return ResultVo.successVo(noteEntity);
+    }
+
+    /**
+     * 删除笔记
+     *
+     * @param id 笔记id
+     * @return 结果
+     */
+    @RequestMapping(value = "/deleteNote/{id}", method = RequestMethod.POST)
+    public ResultVo deleteNote(@PathVariable("id") Integer id) {
+
+        /*----------------------------------------------- 日志记录 --------------------------------------------------*/
+        logger.debug("删除笔记");
+
+        /*----------------------------------------------- 参数校验 --------------------------------------------------*/
+        validateInteger(id, "笔记id不能为空！");
+
+        /*----------------------------------------------- 业务处理 --------------------------------------------------*/
+        Map<String, Object> resultMap = noteService.deleteNote(request, id);
+
+        /*----------------------------------------------- 方法返回 --------------------------------------------------*/
+        return ResultVo.successVo(resultMap);
     }
 }

@@ -1,6 +1,7 @@
 package com.xin.lemontree.controller.novel.service;
 
 import com.xin.lemontree.entity.novel.NovelChapterEntity;
+import com.xin.lemontree.tools.page.Pageable;
 import com.xin.lemontree.vo.novel.NovelChapterVo;
 import com.xin.lemontree.vo.novel.NovelVo;
 import org.springframework.data.domain.Page;
@@ -43,24 +44,22 @@ public interface NovelService {
     /**
      * 获取小说列表
      *
-     * @param pageNo    当前页
-     * @param pageSize  每页大小
+     * @param pageable  分页
      * @param orderType 排序类型
      * @return 分页数据
      */
-    Page<NovelVo> getNovelPage(Integer pageNo, Integer pageSize, Integer orderType);
+    Page<NovelVo> getNovelPage(Pageable pageable, Integer orderType);
 
     /**
      * 获取小说章节列表
      *
      * @param novelCode 小说编号
-     * @param pageNo    当前页
-     * @param pageSize  每页大小
+     * @param pageable  分页
      * @param orderType 排序类型
      * @param keywords  关键字
      * @return 分页数据
      */
-    Page<NovelChapterVo> getNovelChapterPage(String novelCode, Integer pageNo, Integer pageSize, Integer orderType, String keywords);
+    Page<NovelChapterVo> getNovelChapterPage(String novelCode, Pageable pageable, Integer orderType, String keywords);
 
     /**
      * 获取所有小说列表

@@ -209,12 +209,7 @@
                         <span class="glyphicon glyphicon-plus"></span>
                     </a>
                 </div>
-                <div class=""></div>
-                <ul class="list-group">
-                    <li class="list-group-item"><a href="">记录一</a></li>
-                    <li class="list-group-item"><a href="">记录一</a></li>
-                    <li class="list-group-item"><a href="">记录一</a></li>
-                </ul>
+                <ul class="list-group" id="notePage"></ul>
             </div>
         </div>
     </div>
@@ -292,13 +287,20 @@
 </body>
 <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="js/plugin.js"></script>
 <script>
-    var pageNo = 1;
-    var pageSize = 4;
+    var novelPageNo = 1;
+    var novelPageSize = 4;
     var orderType = 0;
 
+    var notePageNo = 1;
+    var notePageSize = 10;
+
     $(function () {
+        // 获取小说分页
         getNovelPage();
+        // 获取笔记分页
+        getNotePage();
 
         // 设置缩略图点击事件
         $("#novel .thumbnail").click(function () {
@@ -308,8 +310,8 @@
         // 设置分页点击事件
         $(".novel-pager").click(function () {
             if (!$(this).hasClass("disabled")) {
-                pageNo = parseInt($(this).attr("pageNo"));
-                if (pageNo) {
+                novelPageNo = parseInt($(this).attr("novelPageNo"));
+                if (novelPageNo) {
                     getNovelPage();
                 }
             }
@@ -318,11 +320,12 @@
 
     function getNovelPage() {
         $.ajax({
-            url: "/api/novel/page/" + pageNo,
+            url: "/api/novel/getNovelPage",
             type: "post",
             dataType: "json",
             data: {
-                pageSize: pageSize,
+                pageNo: novelPageNo,
+                pageSize: novelPageSize,
                 orderType: orderType
             },
             success: function (data) {
@@ -339,13 +342,13 @@
                 // 上下页初始化
                 $("#prevNovels").removeClass("disabled");
                 $("#nextNovels").removeClass("disabled");
-                if (pageNo - 1 > 0) {
-                    $("#prevNovels").attr("pageNo", pageNo - 1);
+                if (novelPageNo - 1 > 0) {
+                    $("#prevNovels").attr("novelPageNo", novelPageNo - 1);
                 } else {
                     $("#prevNovels").addClass("disabled");
                 }
-                if (pageNo + 1 <= page.totalPages) {
-                    $("#nextNovels").attr("pageNo", pageNo + 1);
+                if (novelPageNo + 1 <= page.totalPages) {
+                    $("#nextNovels").attr("novelPageNo", novelPageNo + 1);
                 } else {
                     $("#nextNovels").addClass("disabled");
                 }
@@ -396,6 +399,48 @@
                 console.log(data);
             }
         });
+    }
+
+    function getNotePage() {
+        $.ajax({
+            url: "/api/note/getNotePage",
+            type: "post",
+            data: {
+                pageNo: notePageNo,
+                pageSize: notePageSize
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data.result) {
+                    var page = data.data;
+                    var content = page.content;
+                    var html = '';
+                    for (var index in content) {
+                        console.log(content[index]);
+                        html += '<li class="list-group-item"><a href="">[' + content[index].createTime + '] ' + content[index].title + '</a><a class="btn btn-warning btn-xs pull-right" onclick="deleteNote(' + content[index].id + ')"><span class="glyphicon glyphicon-trash"></span></a></li>';
+                    }
+                    $("#notePage li").remove();
+                    $("#notePage").append(html);
+                } else {
+                    alert(data.message);
+                }
+            }
+        })
+    }
+
+    function deleteNote(id) {
+        $.ajax({
+            url:"/api/note/deleteNote/" + id,
+            type:"post",
+            dataType:"json",
+            success:function(data){
+                if (data.result){
+
+                } else{
+                    alert(data.message);
+                }
+            }
+        })
     }
 </script>
 </html>

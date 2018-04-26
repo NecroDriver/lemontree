@@ -88,8 +88,8 @@
     var keywords = $(".fuzzy-query").find("input").val();
     $(function () {
 
-        if (dispOrder != null){
-            pageNo =  Math.ceil(parseInt(dispOrder) / pageSize);
+        if (dispOrder != null) {
+            pageNo = Math.ceil(parseInt(dispOrder) / pageSize);
             orderType = 1;
             $("#orderType").html('<span class="glyphicon glyphicon-sort"></span> 倒序');
         }
@@ -138,10 +138,11 @@
 
     function getNovelChapterPage(pageNo, pageSize, orderType, keywords) {
         $.ajax({
-            url: "/api/novel/" + novelCode + "/page/" + pageNo,
+            url: "/api/novel/" + novelCode + "/getNovelChapterPage",
             type: "post",
             dataType: "json",
             data: {
+                pageNo: pageNo,
                 pageSize: pageSize,
                 orderType: orderType,
                 keywords: keywords

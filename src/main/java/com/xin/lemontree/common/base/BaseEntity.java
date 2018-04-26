@@ -4,8 +4,6 @@ import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -23,7 +21,6 @@ public class BaseEntity implements Serializable {
      * 创建时间
      */
     @Column(name = "createTime", nullable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
     /**
      * 创建人
@@ -37,7 +34,6 @@ public class BaseEntity implements Serializable {
      * 修改时间
      */
     @Column(name = "modifyTime", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private Date modifyTime;
     /**
      * 修改人

@@ -2,14 +2,17 @@ package com.xin.lemontree.controller.novel.action;
 
 import com.xin.lemontree.common.base.BaseAction;
 import com.xin.lemontree.controller.novel.service.NovelService;
+import com.xin.lemontree.tools.page.Pageable;
 import com.xin.lemontree.vo.ResultVo;
 import com.xin.lemontree.vo.novel.NovelChapterVo;
 import com.xin.lemontree.vo.novel.NovelVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -69,29 +72,22 @@ public class NovelAction extends BaseAction {
     /**
      * 获取小说分页
      *
-     * @param pageNo    当前页
-     * @param pageSize  每页大小
+     * @param pageable  分页
      * @param orderType 排序类型
      * @return 分页数据
      */
-    @RequestMapping(value = "/page/{pageNo}", method = RequestMethod.POST)
+    @RequestMapping(value = "/getNovelPage", method = RequestMethod.POST)
     @ResponseBody
-    public ResultVo getNovelPage(@PathVariable("pageNo") Integer pageNo, Integer pageSize, Integer orderType) {
+    public ResultVo getNovelPage(Pageable pageable, Integer orderType) {
 
         /*-------------------------------------------- 日志记录 ------------------------------------------------------*/
         logger.debug("获取小说分页");
 
         /*-------------------------------------------- 参数校验 ------------------------------------------------------*/
         validateInteger(orderType, "排序方式");
-        if (ObjectUtils.isEmpty(pageNo)) {
-            pageNo = 1;
-        }
-        if (ObjectUtils.isEmpty(pageSize)) {
-            pageSize = 10;
-        }
 
         /*-------------------------------------------- 业务处理 ------------------------------------------------------*/
-        Page<NovelVo> novelVoPage = novelService.getNovelPage(pageNo, pageSize, orderType);
+        Page<NovelVo> novelVoPage = novelService.getNovelPage(pageable, orderType);
 
         /*-------------------------------------------- 方法返回 ------------------------------------------------------*/
         return ResultVo.newResultVo(true, "获取小说分页成功！", novelVoPage);
@@ -101,15 +97,14 @@ public class NovelAction extends BaseAction {
      * 获取小说章节列表
      *
      * @param novelCode 小说编号
-     * @param pageNo    当前页
-     * @param pageSize  每页大小
+     * @param pageable  分页
      * @param orderType 排序类型
      * @param keywords  关键字
      * @return 分页数据
      */
-    @RequestMapping(value = "/{novelCode}/page/{pageNo}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{novelCode}/getNovelChapterPage", method = RequestMethod.POST)
     @ResponseBody
-    public ResultVo getNovelChapterPage(@PathVariable("novelCode") String novelCode, @PathVariable("pageNo") Integer pageNo, Integer pageSize, Integer orderType, String keywords) {
+    public ResultVo getNovelChapterPage(@PathVariable("novelCode") String novelCode, Pageable pageable, Integer orderType, String keywords) {
 
         /*-------------------------------------------- 日志记录 ------------------------------------------------------*/
         logger.debug("获取小说章节列表");
@@ -117,15 +112,9 @@ public class NovelAction extends BaseAction {
         /*-------------------------------------------- 参数校验 ------------------------------------------------------*/
         validateNotEmpty(novelCode, "小说编号");
         validateInteger(orderType, "排序方式");
-        if (ObjectUtils.isEmpty(pageNo)) {
-            pageNo = 1;
-        }
-        if (ObjectUtils.isEmpty(pageSize)) {
-            pageSize = 25;
-        }
 
         /*-------------------------------------------- 业务处理 ------------------------------------------------------*/
-        Page<NovelChapterVo> novelChapterVoPage = novelService.getNovelChapterPage(novelCode, pageNo, pageSize, orderType, keywords);
+        Page<NovelChapterVo> novelChapterVoPage = novelService.getNovelChapterPage(novelCode, pageable, orderType, keywords);
 
         /*-------------------------------------------- 方法返回 ------------------------------------------------------*/
         return ResultVo.successVo(novelChapterVoPage);

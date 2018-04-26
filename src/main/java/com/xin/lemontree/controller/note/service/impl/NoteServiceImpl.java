@@ -5,13 +5,18 @@ import com.xin.lemontree.common.consts.CommonConsts;
 import com.xin.lemontree.controller.note.service.INoteService;
 import com.xin.lemontree.dao.note.LabelDao;
 import com.xin.lemontree.dao.note.NoteDao;
+import com.xin.lemontree.dao.note.specification.NoteSpecification;
 import com.xin.lemontree.entity.note.LabelEntity;
 import com.xin.lemontree.entity.note.NoteEntity;
 import com.xin.lemontree.tools.convert.ConvertUtils;
+import com.xin.lemontree.tools.page.Pageable;
 import com.xin.lemontree.vo.UserLoginVo;
 import com.xin.lemontree.vo.note.LabelVo;
-import com.xin.lemontree.vo.note.NoteVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -98,7 +103,7 @@ public class NoteServiceImpl extends BaseService implements INoteService {
         resultMap.put("updateNum", updateNum);
 
         /*----------------------------------------------- 日志记录 --------------------------------------------------*/
-        logger.debug("添加标签成功！" + resultMap);
+        logger.debug("删除标签成功！" + resultMap);
 
         /*----------------------------------------------- 方法返回 --------------------------------------------------*/
         return resultMap;
@@ -169,25 +174,74 @@ public class NoteServiceImpl extends BaseService implements INoteService {
     }
 
     /**
-     * 获取笔记列表
+     * 获取笔记分页
      *
-     * @param request 请求
-     * @param keyword 关键字
-     * @return 列表
+     * @param request  请求
+     * @param keyword  关键字
+     * @param pageable 分页
+     * @return 分页
      */
     @Override
-    public List<NoteVo> getNotePage(HttpServletRequest request, String keyword) {
+    public Page<NoteEntity> getNotePage(HttpServletRequest request, String keyword, Pageable pageable) {
 
         /*----------------------------------------------- 参数声明 --------------------------------------------------*/
-
+        UserLoginVo user = (UserLoginVo) request.getAttribute("user");
+        PageRequest pageRequest = new PageRequest(pageable.getPageNo(), pageable.getPageSize(), Sort.Direction.DESC, "createTime");
+        Specification<NoteEntity> specification = NoteSpecification.selectListByAccount(user.getAccount(), keyword);
 
         /*----------------------------------------------- 业务处理 --------------------------------------------------*/
-
+        Page<NoteEntity> noteEntityPage = noteDao.findAll(specification, pageRequest);
 
         /*----------------------------------------------- 日志记录 --------------------------------------------------*/
-        logger.debug("获取笔记列表成功！");
+        logger.debug("获取笔记分页成功！");
 
         /*----------------------------------------------- 方法返回 --------------------------------------------------*/
-        return null;
+        return noteEntityPage;
+    }
+
+    /**
+     * 获取单条笔记
+     *
+     * @param id 笔记id
+     * @return 数据
+     */
+    @Override
+    public NoteEntity getNoteInfo(Integer id) {
+
+        /*----------------------------------------------- 业务处理 --------------------------------------------------*/
+        NoteEntity noteEntity = noteDao.findByIdEquals(id);
+
+        /*----------------------------------------------- 日志记录 --------------------------------------------------*/
+        logger.debug("获取单条笔记成功！");
+
+        /*----------------------------------------------- 方法返回 --------------------------------------------------*/
+        return noteEntity;
+    }
+
+    /**
+     * 删除笔记
+     *
+     * @param request 请求
+     * @param id      笔记id
+     * @return 结果
+     */
+    @Override
+    @Transactional
+    public Map<String, Object> deleteNote(HttpServletRequest request, Integer id) {
+
+        /*----------------------------------------------- 参数声明 --------------------------------------------------*/
+        Map<String, Object> resultMap = new HashMap<>();
+        UserLoginVo user = (UserLoginVo) request.getAttribute("user");
+        Date nowDate = new Date();
+
+        /*----------------------------------------------- 业务处理 --------------------------------------------------*/
+        int updateNum = noteDao.updateFlagDelete(id, CommonConsts.FLAG_DELETE_YES, nowDate, user.getAccount(), user.getIp());
+        resultMap.put("updateNum", updateNum);
+
+        /*----------------------------------------------- 日志记录 --------------------------------------------------*/
+        logger.debug("删除笔记成功！" + resultMap);
+
+        /*----------------------------------------------- 方法返回 --------------------------------------------------*/
+        return resultMap;
     }
 }

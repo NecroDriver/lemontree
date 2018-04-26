@@ -12,6 +12,7 @@ import com.xin.lemontree.entity.novel.NovelEntity;
 import com.xin.lemontree.tools.convert.ConvertUtils;
 import com.xin.lemontree.tools.jsoup.JsoupUtils;
 import com.xin.lemontree.tools.jsoup.impl.NovelDocumentAnalyzer;
+import com.xin.lemontree.tools.page.Pageable;
 import com.xin.lemontree.vo.novel.NovelChapterVo;
 import com.xin.lemontree.vo.novel.NovelVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -166,18 +167,17 @@ public class NovelServiceImpl extends BaseService implements NovelService {
     /**
      * 获取小说列表
      *
-     * @param pageNo    当前页
-     * @param pageSize  每页大小
+     * @param pageable  分页
      * @param orderType 排序类型
      * @return 分页数据
      */
     @Override
-    public Page<NovelVo> getNovelPage(Integer pageNo, Integer pageSize, Integer orderType) {
+    public Page<NovelVo> getNovelPage(Pageable pageable, Integer orderType) {
 
         /*------------------------------------------- 参数声明 ------------------------------------------*/
         Sort.Order order = new Sort.Order(orderType.equals(0) ? Sort.Direction.DESC : Sort.Direction.ASC, "id");
         Sort sort = new Sort(order);
-        PageRequest pageRequest = new PageRequest(pageNo - 1, pageSize, sort);
+        PageRequest pageRequest = new PageRequest(pageable.getPageNo(), pageable.getPageSize(), sort);
 
         /*------------------------------------------- 业务处理 ------------------------------------------*/
         Page<NovelEntity> novelEntityPage = novelDao.findAll(pageRequest);
@@ -194,19 +194,18 @@ public class NovelServiceImpl extends BaseService implements NovelService {
      * 获取小说章节列表
      *
      * @param novelCode 小说编号
-     * @param pageNo    当前页
-     * @param pageSize  每页大小
+     * @param pageable  分页
      * @param orderType 排序类型
      * @param keywords  关键字
      * @return 分页数据
      */
     @Override
-    public Page<NovelChapterVo> getNovelChapterPage(String novelCode, Integer pageNo, Integer pageSize, Integer orderType, String keywords) {
+    public Page<NovelChapterVo> getNovelChapterPage(String novelCode, Pageable pageable, Integer orderType, String keywords) {
 
         /*------------------------------------------- 参数声明 ------------------------------------------*/
         Sort.Order idOrder = new Sort.Order(orderType.equals(0) ? Sort.Direction.DESC : Sort.Direction.ASC, "id");
         Sort sort = new Sort(idOrder);
-        PageRequest pageRequest = new PageRequest(pageNo - 1, pageSize, sort);
+        PageRequest pageRequest = new PageRequest(pageable.getPageNo(), pageable.getPageSize(), sort);
         Specification<NovelChapterEntity> specification = NovelChapterSpecification.selectByNovleCode(novelCode, keywords);
 
         /*------------------------------------------- 业务处理 ------------------------------------------*/

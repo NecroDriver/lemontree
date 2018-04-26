@@ -1,7 +1,9 @@
 package com.xin.lemontree.controller.note.service;
 
+import com.xin.lemontree.entity.note.NoteEntity;
+import com.xin.lemontree.tools.page.Pageable;
 import com.xin.lemontree.vo.note.LabelVo;
-import com.xin.lemontree.vo.note.NoteVo;
+import org.springframework.data.domain.Page;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -52,11 +54,29 @@ public interface INoteService {
     Map<String, Object> saveNoteInfo(HttpServletRequest request, String title, String content, Integer labelId);
 
     /**
-     * 获取笔记列表
+     * 获取笔记分页
+     *
+     * @param request  请求
+     * @param keyword  关键字
+     * @param pageable 分页
+     * @return 分页
+     */
+    Page<NoteEntity> getNotePage(HttpServletRequest request, String keyword, Pageable pageable);
+
+    /**
+     * 获取单条笔记
+     *
+     * @param id 笔记id
+     * @return 数据
+     */
+    NoteEntity getNoteInfo(Integer id);
+
+    /**
+     * 删除笔记
      *
      * @param request 请求
-     * @param keyword 关键字
-     * @return 列表
+     * @param id      笔记id
+     * @return 结果
      */
-    List<NoteVo> getNotePage(HttpServletRequest request, String keyword);
+    Map<String, Object> deleteNote(HttpServletRequest request, Integer id);
 }
