@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta name="viewport" charset="UTF-8" content="width=device-width,initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <meta name="viewport" charset="UTF-8" content="width=device-width,initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/zdialog.css"/>
     <title>主页</title>
     <style>
         body {
@@ -287,7 +288,7 @@
 </body>
 <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="js/plugin.js"></script>
+<script src="js/zdialog.js"></script>
 <script>
     var novelPageNo = 1;
     var novelPageSize = 4;
@@ -417,30 +418,34 @@
                     var html = '';
                     for (var index in content) {
                         console.log(content[index]);
-                        html += '<li class="list-group-item"><a href="">[' + content[index].createTime + '] ' + content[index].title + '</a><a class="btn btn-warning btn-xs pull-right" onclick="deleteNote(' + content[index].id + ')"><span class="glyphicon glyphicon-trash"></span></a></li>';
+                        html += '<li class="list-group-item" id="note' + content[index].id + '"><a href="">[' + content[index].createTime + '] ' + content[index].title + '</a><a class="btn btn-warning btn-xs pull-right" onclick="deleteNote(' + content[index].id + ')"><span class="glyphicon glyphicon-trash"></span></a></li>';
                     }
                     $("#notePage li").remove();
                     $("#notePage").append(html);
                 } else {
-                    alert(data.message);
+                    alertMessage(data.message);
                 }
             }
         })
     }
 
     function deleteNote(id) {
-        $.ajax({
-            url:"/api/note/deleteNote/" + id,
-            type:"post",
-            dataType:"json",
-            success:function(data){
-                if (data.result){
-
-                } else{
-                    alert(data.message);
+        confirmMessage("确认删除该笔记吗？", function () {
+            $.ajax({
+                url: "/api/note/deleteNote/" + id,
+                type: "post",
+                dataType: "json",
+                success: function (data) {
+                    if (data.result) {
+                        closeMessage();
+                        autoFadeMessage("笔记删除成功！");
+                        $("#note" + id).remove();
+                    } else {
+                        alertMessage(data.message);
+                    }
                 }
-            }
-        })
+            })
+        });
     }
 </script>
 </html>
