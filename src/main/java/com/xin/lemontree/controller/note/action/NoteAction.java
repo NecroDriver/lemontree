@@ -110,9 +110,9 @@ public class NoteAction extends BaseAction {
         logger.debug("新增笔记");
 
         /*----------------------------------------------- 参数校验 --------------------------------------------------*/
-        validateNotEmpty(title, "标题不能为空！");
-        validateNotEmpty(content, "内容不能为空！");
-        validateInteger(labelId, "关联标签不能为空！");
+        validateNotEmpty(title, "标题");
+        validateNotEmpty(content, "内容");
+        validateInteger(labelId, "关联标签");
 
         /*----------------------------------------------- 业务处理 --------------------------------------------------*/
         Map<String, Object> resultMap = noteService.saveNoteInfo(request, title, content, labelId);
