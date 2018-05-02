@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta name="viewport" charset="UTF-8" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <title>笔记详情</title>
+</head>
+<body>
+<div class="container">
+    <div class="row clear-fix">
+        <div class="col-md-12">
+            <div class="page-header">
+                <h1 id="title"></h1>
+            </div>
+            <p id="content"></p>
+            <hr/>
+        </div>
+        <ul class="list-unstyled">
+            <li><a href="">« </a>上一篇：<a></a></li>
+            <li><a href="">» </a>下一篇：<a></a></li>
+        </ul>
+    </div>
+</div>
+</body>
+<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="../js/common.js"></script>
+<script>
+    var id = getUrlValue("id");
+    $(function () {
+        getNoteInfo();
+    });
+
+    function getNoteInfo() {
+        $.ajax({
+            url: "/api/note/getNoteInfo/" + id,
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                if (data.result) {
+                    var content = data.data;
+                    $("#title").html(content.title);
+                    $("#content").html(content.content);
+                } else {
+                    alertMessage(data.message);
+                }
+            }
+        });
+    }
+</script>
+</html>

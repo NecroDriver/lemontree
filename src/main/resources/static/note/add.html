@@ -105,6 +105,7 @@
             success: function (data) {
                 if (data.result) {
                     autoFadeMessage("保存成功！");
+                    window.location.href = "../main.html#note";
                 } else {
                     alertMessage(data.message);
                 }
