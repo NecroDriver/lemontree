@@ -186,4 +186,32 @@ public class NoteAction extends BaseAction {
         /*----------------------------------------------- 方法返回 --------------------------------------------------*/
         return ResultVo.successVo(resultMap);
     }
+
+    /**
+     * 修改笔记
+     *
+     * @param id      笔记id
+     * @param title   标题
+     * @param content 内容
+     * @param labelId 标签id
+     * @return 结果
+     */
+    @RequestMapping(value = "/editNoteInfo", method = RequestMethod.POST)
+    public ResultVo editNoteInfo(Integer id, String title, String content, Integer labelId) {
+
+        /*----------------------------------------------- 日志记录 --------------------------------------------------*/
+        logger.debug("修改笔记");
+
+        /*----------------------------------------------- 参数校验 --------------------------------------------------*/
+        validateInteger(id, "笔记id");
+        validateNotEmpty(title, "标题");
+        validateNotEmpty(content, "内容");
+        validateInteger(labelId, "关联标签");
+
+        /*----------------------------------------------- 业务处理 --------------------------------------------------*/
+        Map<String, Object> resultMap = noteService.editNoteInfo(request, id, title, content, labelId);
+
+        /*----------------------------------------------- 方法返回 --------------------------------------------------*/
+        return ResultVo.successVo(resultMap);
+    }
 }

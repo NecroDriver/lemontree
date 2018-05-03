@@ -418,7 +418,7 @@
                     var html = '';
                     for (var index in content) {
                         console.log(content[index]);
-                        html += '<li class="list-group-item" id="note' + content[index].id + '"><a href="note/detail.html?id=' + content[index].id + '" target="_blank">[' + content[index].createTime + '] ' + content[index].title + '</a><a class="btn btn-warning btn-xs pull-right" onclick="deleteNote(' + content[index].id + ')"><span class="glyphicon glyphicon-trash"></span></a></li>';
+                        html += '<li class="list-group-item" id="note' + content[index].id + '"><a href="note/detail.html?id=' + content[index].id + '" target="_blank">[' + content[index].createTime + '] ' + content[index].title + '</a><a class="btn btn-warning btn-xs pull-right" onclick="deleteNote(' + content[index].id + ')"><span class="glyphicon glyphicon-trash"></span></a><a class="btn btn-success btn-xs pull-right" href="note/edit.html?id=' + content[index].id + '" style="margin-right:3px;"><span class="glyphicon glyphicon-edit"></span></a></li>';
                     }
                     $("#notePage li").remove();
                     $("#notePage").append(html);

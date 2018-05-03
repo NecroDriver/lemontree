@@ -248,4 +248,34 @@ public class NoteServiceImpl extends BaseService implements INoteService {
         /*----------------------------------------------- 方法返回 --------------------------------------------------*/
         return resultMap;
     }
+
+    /**
+     * 修改笔记
+     *
+     * @param request 请求
+     * @param id      笔记id
+     * @param title   标题
+     * @param content 内容
+     * @param labelId 标签id
+     * @return 结果
+     */
+    @Override
+    @Transactional
+    public Map<String, Object> editNoteInfo(HttpServletRequest request, Integer id, String title, String content, Integer labelId) {
+
+        /*----------------------------------------------- 参数声明 --------------------------------------------------*/
+        Map<String, Object> resultMap = new HashMap<>();
+        UserLoginVo user = (UserLoginVo) request.getAttribute("user");
+        Date nowDate = new Date();
+
+        /*----------------------------------------------- 业务处理 --------------------------------------------------*/
+        int updateNum = noteDao.updateInfo(id, title, content, labelId, user.getAccount(), nowDate, user.getIp());
+        resultMap.put("updateNum", updateNum);
+
+        /*----------------------------------------------- 日志记录 --------------------------------------------------*/
+        logger.debug("修改标签成功！" + resultMap);
+
+        /*----------------------------------------------- 方法返回 --------------------------------------------------*/
+        return resultMap;
+    }
 }

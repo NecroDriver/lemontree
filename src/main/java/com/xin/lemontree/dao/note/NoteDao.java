@@ -55,4 +55,20 @@ public interface NoteDao extends PagingAndSortingRepository<NoteEntity, Integer>
     @Modifying
     @Query("update NoteEntity set flagDelete = :flagDelete, modifyTime = :modifyTime, modifier = :modifier, modifierIP = :modifierIP where id = :id")
     int updateFlagDelete(@Param("id") Integer id, @Param("flagDelete") Integer flagDelete, @Param("modifyTime") Date modifyTime, @Param("modifier") String modifier, @Param("modifierIP") String modifierIP);
+
+    /**
+     * 更新笔记内容
+     *
+     * @param id         笔记id
+     * @param title      标题
+     * @param content    内容
+     * @param labelId    标签id
+     * @param modifier   修改人
+     * @param modifyTime 修改时间
+     * @param modifierIP 修改人ip
+     * @return 结果
+     */
+    @Modifying
+    @Query("update NoteEntity set title= :title, content = :content, labelId = :labelId, modifier = :modifier,modifyTime = :modifyTime, modifierIP = :modifierIP where id = :id")
+    int updateInfo(@Param("id") Integer id, @Param("title") String title, @Param("content") String content, @Param("labelId") Integer labelId, @Param("modifier") String modifier, @Param("modifyTime") Date modifyTime, @Param("modifierIP") String modifierIP);
 }

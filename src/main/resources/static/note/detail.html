@@ -28,6 +28,7 @@
             </div>
             <p id="content"></p>
             <hr/>
+            <p style="color: #666;">分类：<span id="label">标签</span><span id="create" class="pull-right">时间</span></p>
         </div>
         <div class="col-md-12">
             <ul class="list-unstyled">
@@ -57,6 +58,8 @@
                     var content = data.data;
                     $("#title").html(content.title);
                     $("#content").html(content.content);
+                    $("#label").text(content.labelId);
+                    $("#create").text(content.createTime);
                     if (content.prevNote) {
                         $("#prevNote a").attr("href", "detail.html?id=" + content.prevNote.id);
                         $("#prevNote a:last").html(content.prevNote.title);

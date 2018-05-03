@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/zdialog.css">
-    <title>添加笔记</title>
+    <title>修改笔记</title>
     <style type="text/css">
         body {
             background: url("../images/background_note_add.jpg");
@@ -43,7 +43,7 @@
                 <div class="form-group" id="editor"></div>
                 <div class="form-group">
                     <select class="form-control pull-left" id="label"></select>
-                    <button type="button" class="btn btn-primary pull-right" onclick="addNote()">保存</button>
+                    <button type="button" class="btn btn-primary pull-right" onclick="editNote()">保存</button>
                 </div>
             </form>
         </div>
@@ -53,8 +53,10 @@
 <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="//unpkg.com/wangeditor/release/wangEditor.min.js"></script>
+<script src="../js/common.js"></script>
 <script src="../js/zdialog.js"></script>
 <script>
+    var id = getUrlValue("id");
     var E = window.wangEditor;
     var editor = new E("#editor");
     editor.create();
@@ -65,6 +67,8 @@
         $(".w-e-text-container").css("border", "1px solid #f1f1f1");
         // 获取标签列表
         getLabelList();
+        // 获取笔记信息
+        getNoteInfo();
 
     })
 
@@ -89,14 +93,33 @@
         })
     }
 
-    function addNote() {
+    function getNoteInfo() {
+        $.ajax({
+            url: "/api/note/getNoteInfo/" + id,
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                if (data.result) {
+                    var content = data.data;
+                    $("#title").val(content.title);
+                    editor.txt.html(content.content);
+                    $("#label option[value=" + content.labelId + "]").attr("selected", "selected");
+                } else {
+                    alertMessage(data.message);
+                }
+            }
+        });
+    }
+
+    function editNote() {
         var title = $("#title").val();
         var content = editor.txt.html();
         var labelId = $("#label").val();
         $.ajax({
-            url: "/api/note/saveNoteInfo",
+            url: "/api/note/editNoteInfo",
             type: "post",
             data: {
+                id: id,
                 title: title,
                 content: content,
                 labelId: labelId
@@ -104,7 +127,7 @@
             dataType: "json",
             success: function (data) {
                 if (data.result) {
-                    autoFadeMessage("保存成功！");
+                    autoFadeMessage("修改成功！");
                     window.location.href = "../main.html#note";
                 } else {
                     alertMessage(data.message);

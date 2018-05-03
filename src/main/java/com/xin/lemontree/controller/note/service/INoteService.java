@@ -80,4 +80,16 @@ public interface INoteService {
      * @return 结果
      */
     Map<String, Object> deleteNote(HttpServletRequest request, Integer id);
+
+    /**
+     * 修改笔记
+     *
+     * @param request 请求
+     * @param id      笔记id
+     * @param title   标题
+     * @param content 内容
+     * @param labelId 标签id
+     * @return 结果
+     */
+    Map<String, Object> editNoteInfo(HttpServletRequest request, Integer id, String title, String content, Integer labelId);
 }
