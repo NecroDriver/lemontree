@@ -26,6 +26,26 @@ public interface NoteDao extends PagingAndSortingRepository<NoteEntity, Integer>
     NoteEntity findByIdEquals(Integer id);
 
     /**
+     * 获取下一篇
+     *
+     * @param creator    创建人
+     * @param id         主键id
+     * @param flagDelete 是否删除
+     * @return 数据
+     */
+    NoteEntity findTopByCreatorEqualsAndIdLessThanAndFlagDeleteEqualsOrderByIdDesc(String creator, Integer id, Integer flagDelete);
+
+    /**
+     * 获取上一篇
+     *
+     * @param creator    创建人
+     * @param id         主键id
+     * @param flagDelete 是否删除
+     * @return 数据
+     */
+    NoteEntity findTopByCreatorEqualsAndIdGreaterThanAndFlagDeleteEqualsOrderByIdAsc(String creator, Integer id, Integer flagDelete);
+
+    /**
      * 更新flagUpdate标志
      *
      * @param id         笔记id

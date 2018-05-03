@@ -6,6 +6,7 @@ import com.xin.lemontree.entity.note.NoteEntity;
 import com.xin.lemontree.tools.page.Pageable;
 import com.xin.lemontree.vo.ResultVo;
 import com.xin.lemontree.vo.note.LabelVo;
+import com.xin.lemontree.vo.note.NoteVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -158,10 +159,10 @@ public class NoteAction extends BaseAction {
         validateInteger(id, "笔记id不能为空！");
 
         /*----------------------------------------------- 业务处理 ----------------------------------------------*/
-        NoteEntity noteEntity = noteService.getNoteInfo(id);
+        NoteVo noteVo = noteService.getNoteInfo(id);
 
         /*----------------------------------------------- 方法返回 --------------------------------------------------*/
-        return ResultVo.successVo(noteEntity);
+        return ResultVo.successVo(noteVo);
     }
 
     /**

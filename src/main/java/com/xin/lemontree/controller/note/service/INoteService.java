@@ -3,6 +3,7 @@ package com.xin.lemontree.controller.note.service;
 import com.xin.lemontree.entity.note.NoteEntity;
 import com.xin.lemontree.tools.page.Pageable;
 import com.xin.lemontree.vo.note.LabelVo;
+import com.xin.lemontree.vo.note.NoteVo;
 import org.springframework.data.domain.Page;
 
 import javax.servlet.http.HttpServletRequest;
@@ -69,7 +70,7 @@ public interface INoteService {
      * @param id 笔记id
      * @return 数据
      */
-    NoteEntity getNoteInfo(Integer id);
+    NoteVo getNoteInfo(Integer id);
 
     /**
      * 删除笔记

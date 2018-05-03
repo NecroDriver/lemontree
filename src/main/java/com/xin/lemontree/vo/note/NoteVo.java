@@ -1,6 +1,7 @@
 package com.xin.lemontree.vo.note;
 
 import com.xin.lemontree.common.base.BaseVo;
+import com.xin.lemontree.entity.note.NoteEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -18,14 +19,17 @@ public class NoteVo extends BaseVo {
      * 主键
      */
     private Integer id;
+
     /**
      * 标题
      */
     private String title;
+
     /**
      * 内容
      */
     private String content;
+
     /**
      * 标签id
      */
@@ -35,5 +39,15 @@ public class NoteVo extends BaseVo {
      * 是否删除，0：否 1：是
      */
     private Integer flagDelete;
+
+    /**
+     * 上一条笔记
+     */
+    private NoteEntity nextNote;
+
+    /**
+     * 下一条笔记
+     */
+    private NoteEntity prevNote;
 
 }

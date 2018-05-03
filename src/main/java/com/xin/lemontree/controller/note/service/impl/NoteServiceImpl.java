@@ -12,6 +12,7 @@ import com.xin.lemontree.tools.convert.ConvertUtils;
 import com.xin.lemontree.tools.page.Pageable;
 import com.xin.lemontree.vo.UserLoginVo;
 import com.xin.lemontree.vo.note.LabelVo;
+import com.xin.lemontree.vo.note.NoteVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -206,16 +207,19 @@ public class NoteServiceImpl extends BaseService implements INoteService {
      * @return 数据
      */
     @Override
-    public NoteEntity getNoteInfo(Integer id) {
+    public NoteVo getNoteInfo(Integer id) {
 
         /*----------------------------------------------- 业务处理 --------------------------------------------------*/
         NoteEntity noteEntity = noteDao.findByIdEquals(id);
+        NoteVo noteVo = ConvertUtils.convert(noteEntity, NoteVo.class);
+        noteVo.setPrevNote(noteDao.findTopByCreatorEqualsAndIdGreaterThanAndFlagDeleteEqualsOrderByIdAsc(noteVo.getCreator(), id, CommonConsts.FLAG_DELETE_NO));
+        noteVo.setNextNote(noteDao.findTopByCreatorEqualsAndIdLessThanAndFlagDeleteEqualsOrderByIdDesc(noteVo.getCreator(), id, CommonConsts.FLAG_DELETE_NO));
 
         /*----------------------------------------------- 日志记录 --------------------------------------------------*/
         logger.debug("获取单条笔记成功！");
 
         /*----------------------------------------------- 方法返回 --------------------------------------------------*/
-        return noteEntity;
+        return noteVo;
     }
 
     /**
