@@ -148,15 +148,22 @@
                 keywords: keywords
             },
             success: function (data) {
-                var page = data.data;
-                var contentHtml = "";
-                console.log(page);
-                page.content.forEach(function (value) {
-                    contentHtml += '<dd><a href="detail.html?id=' + value.id + '">' + value.chapterName + '</a></dd>';
-                });
-                $(".panel-body dl").html("");
-                $(".panel-body dl").append(contentHtml);
-                setPagination(pageNo, page.totalPages, 1);
+                if (data.result) {
+                    var page = data.data;
+                    var contentHtml = "";
+                    if (page.content.length > 0) {
+                        page.content.forEach(function (value) {
+                            contentHtml += '<dd><a href="detail.html?id=' + value.id + '">' + value.chapterName + '</a></dd>';
+                        });
+                        setPagination(pageNo, page.totalPages, 1);
+                    } else {
+                        contentHtml += '<dd>尚未抓取书籍！<a class="btn btn-primary btn-xs">开始抓取</a></dd>'
+                    }
+                    $(".panel-body dl").html("");
+                    $(".panel-body dl").append(contentHtml);
+                } else {
+                    alertMessage(data.message);
+                }
             },
             error: function (XMLHttpRequest) {
                 console.log(XMLHttpRequest);

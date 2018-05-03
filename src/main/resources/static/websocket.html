@@ -1,5 +1,7 @@
-<html>
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
+    <meta charset="UTF-8">
     <title>My Websocket</title>
 </head>
 <body>
@@ -14,7 +16,7 @@ welcome<br/>
 
     // 判断当前浏览器是否支持WebSocket
     if ("WebSocket" in window) {
-        websocket = new WebSocket("ws:localhost:8080/mywebsocket");
+        websocket = new WebSocket("ws:localhost:8080/mywebsocket?testId=12123");
     } else {
         alert('当前浏览器不支持websocket');
     }

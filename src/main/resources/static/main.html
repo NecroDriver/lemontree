@@ -397,7 +397,13 @@
                 description: description
             },
             success: function (data) {
-                console.log(data);
+                if (data.result) {
+                    $("#novelModal").modal("hide");
+                    getNovelPage();
+                    autoFadeMessage("添加成功！");
+                } else {
+                    alertMessage(data.message);
+                }
             }
         });
     }

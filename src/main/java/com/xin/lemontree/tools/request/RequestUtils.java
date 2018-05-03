@@ -47,4 +47,9 @@ public class RequestUtils {
         }
         return ip;
     }
+
+    public static String getUrlValue(String queryString, String name){
+        String pattern = "(^|&)" + name + "=([^&]*)(&|$)";
+        return null;
+    }
 }
