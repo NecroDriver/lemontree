@@ -42,7 +42,7 @@ public class NovelAction extends BaseAction {
     @RequestMapping(value = "/spider/list/{novelCode}", method = RequestMethod.POST)
     @ResponseBody
     public ResultVo spiderNovelList(@PathVariable("novelCode") String novelCode) {
-        return ResultVo.newResultVo(true, "获取小说列表成功！", novelService.spiderNovelList(novelCode));
+        return ResultVo.newResultVo(true, "获取小说列表成功！", novelService.spiderNovelList(request, novelCode));
     }
 
     /**

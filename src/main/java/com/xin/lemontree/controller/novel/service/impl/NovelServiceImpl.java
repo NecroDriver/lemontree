@@ -3,6 +3,7 @@ package com.xin.lemontree.controller.novel.service.impl;
 import com.xin.lemontree.common.base.BaseService;
 import com.xin.lemontree.common.consts.CommonConsts;
 import com.xin.lemontree.controller.novel.service.NovelService;
+import com.xin.lemontree.controller.websocket.TokenWebSocket;
 import com.xin.lemontree.dao.novel.NovelChapterDao;
 import com.xin.lemontree.dao.novel.NovelDao;
 import com.xin.lemontree.dao.novel.specification.NovelChapterSpecification;
@@ -13,6 +14,7 @@ import com.xin.lemontree.tools.convert.ConvertUtils;
 import com.xin.lemontree.tools.jsoup.JsoupUtils;
 import com.xin.lemontree.tools.jsoup.impl.NovelDocumentAnalyzer;
 import com.xin.lemontree.tools.page.Pageable;
+import com.xin.lemontree.vo.UserLoginVo;
 import com.xin.lemontree.vo.novel.NovelChapterVo;
 import com.xin.lemontree.vo.novel.NovelVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.*;
 
@@ -56,42 +59,62 @@ public class NovelServiceImpl extends BaseService implements NovelService {
     private NovelDao novelDao;
 
     /**
+     * webSocket注入
+     */
+    @Autowired
+    private TokenWebSocket tokenWebSocket;
+
+    /**
      * 获取小说列表
      *
+     * @param request   请求
      * @param novelCode 小说编号
      * @return 列表
      */
     @Override
-    public List<Map<String, Object>> spiderNovelList(String novelCode) {
+    public List<Map<String, Object>> spiderNovelList(HttpServletRequest request, String novelCode) {
 
+        /*--------------------------------------------- 参数校验 -----------------------------------------------------*/
+        Assert.notNull(novelCode, "小说编号不能为空！");
+        UserLoginVo user = (UserLoginVo) request.getAttribute("user");
+        Assert.notNull(user, "用户信息不能为空！");
         List<Map<String, Object>> results = new ArrayList<>();
+
+        /*--------------------------------------------- 业务处理 -----------------------------------------------------*/
         try {
             NovelEntity novelEntity = novelDao.findTopByNovelCodeEquals(novelCode);
             Assert.notNull(novelEntity, "未查询到该小说！");
             int dispOrder = 0;
             List<NovelChapterEntity> novelChapterEntityList = JsoupUtils.getEntityList(novelEntity.getUrl(), novelDocumentAnalyzer, NovelChapterEntity.class);
-            for (NovelChapterEntity novelChapterEntity : novelChapterEntityList) {
+            for (int i = 0; i < novelChapterEntityList.size(); i++) {
+                NovelChapterEntity novelChapterEntity = novelChapterEntityList.get(i);
                 try {
                     Thread.sleep(500);
                     // 获取文章内容
                     Map<String, Object> contentMap = JsoupUtils.getMap(novelChapterEntity.getUrl(), novelDocumentAnalyzer);
                     novelChapterEntity.setContent(contentMap.get("content") + "");
                 } catch (Exception e1) {
-                    System.out.println("发生异常" + novelChapterEntity.getChapterName());
+                    logger.debug("发生异常" + novelChapterEntity.getChapterName());
                 }
                 novelChapterEntity.setNovelCode(novelCode);
                 novelChapterEntity.setDispOrder(++dispOrder);
-                novelChapterEntity.setCreator("init");
+                novelChapterEntity.setCreator(user.getAccount());
                 novelChapterEntity.setCreateTime(new Date());
-                novelChapterEntity.setCreatorIP("127.0.0.1");
-                novelChapterEntity.setModifier("init");
+                novelChapterEntity.setCreatorIP(user.getIp());
+                novelChapterEntity.setModifier(user.getAccount());
                 novelChapterEntity.setModifyTime(new Date());
-                novelChapterEntity.setModifierIP("127.0.0.1");
+                novelChapterEntity.setModifierIP(user.getIp());
+                // 获取比例
+                int percent = (i + 1) * 100 / novelChapterEntityList.size();
+                // 发送webSocket消息
+                tokenWebSocket.sendMessageByToken(user.getToken(), percent + "");
             }
             novelChapterDao.save(novelChapterEntityList);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        /*--------------------------------------------- 方法返回 -----------------------------------------------------*/
         return results;
     }
 
@@ -114,7 +137,7 @@ public class NovelServiceImpl extends BaseService implements NovelService {
                 results.add(result);
             } catch (Exception e) {
                 System.out.println(e);
-                System.out.println("发生异常！----" + novelChapterEntity.getChapterName());
+                logger.debug("发生异常！----" + novelChapterEntity.getChapterName());
             }
         });
         return results;

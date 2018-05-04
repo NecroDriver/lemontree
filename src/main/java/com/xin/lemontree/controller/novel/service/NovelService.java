@@ -6,6 +6,7 @@ import com.xin.lemontree.vo.novel.NovelChapterVo;
 import com.xin.lemontree.vo.novel.NovelVo;
 import org.springframework.data.domain.Page;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -20,10 +21,11 @@ public interface NovelService {
     /**
      * 获取小说列表
      *
+     * @param request   请求
      * @param NovelCode 小说编号
      * @return 列表
      */
-    List<Map<String, Object>> spiderNovelList(String NovelCode);
+    List<Map<String, Object>> spiderNovelList(HttpServletRequest request, String NovelCode);
 
     /**
      * 获取小说内容

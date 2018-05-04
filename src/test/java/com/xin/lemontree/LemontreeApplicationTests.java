@@ -24,11 +24,6 @@ public class LemontreeApplicationTests {
 	}
 
 	public static void sayHello(Object object){
-		System.out.println(object);
-		System.out.println(object + "123");
-
-		int pageSize = 30;
-		int dispOrder = 20;
-		System.out.println(dispOrder/pageSize + 1);
+		System.out.println(11*100/23);
     }
 }

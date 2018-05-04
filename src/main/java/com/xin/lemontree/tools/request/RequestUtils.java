@@ -1,6 +1,8 @@
 package com.xin.lemontree.tools.request;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author creator mafh 2018/4/24 16:26
@@ -10,6 +12,12 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class RequestUtils {
 
+    /**
+     * 获取IP地址
+     *
+     * @param request 请求
+     * @return IP地址
+     */
     public static String getIPAddress(HttpServletRequest request) {
         String ip = null;
 
@@ -48,8 +56,20 @@ public class RequestUtils {
         return ip;
     }
 
-    public static String getUrlValue(String queryString, String name){
-        String pattern = "(^|&)" + name + "=([^&]*)(&|$)";
+    /**
+     * 获取url参数
+     *
+     * @param queryString ？后的字符串
+     * @param name        名字
+     * @return 值
+     */
+    public static String getUrlValue(String queryString, String name) {
+        String reg = "(^|&)" + name + "=([^&]*)(&|$)";
+        Pattern pattern = Pattern.compile(reg);
+        Matcher matcher = pattern.matcher(queryString);
+        if (matcher.find()) {
+            return matcher.group(2);
+        }
         return null;
     }
 }
