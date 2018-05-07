@@ -271,7 +271,7 @@
         // 接收到消息的回调方法
         webSocket.onmessage = function (event) {
             if (event.data === "100") {
-                $("#modalTitle").text("数据抓取完成。。。" + event.data + "%");
+                $("#modalTitle").text("数据抓取完成" + event.data + "%，等待载入。。。");
             } else {
                 $("#modalTitle").text("数据抓取中。。。" + event.data + "%");
             }
@@ -282,19 +282,21 @@
         window.onbeforeunload = function () {
             webSocket.close();
         }
-
-        // $.ajax({
-        //     url: "/api/novel/spider/list" + novelCode,
-        //     type: "post",
-        //     dataType: "json",
-        //     success: function (data) {
-        //         if (data.result) {
-        //
-        //         } else {
-        //             alertMessage(data.message);
-        //         }
-        //     }
-        // });
+        // 开始请求
+        $.ajax({
+            url: "/api/novel/spider/list" + novelCode,
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                if (data.result) {
+                    $("#spiderModal").modal("hide");
+                    autoFadeMessage("数据抓取成功！");
+                    setTimeout(window.location.reload(), 500);
+                } else {
+                    alertMessage(data.message);
+                }
+            }
+        });
     }
 </script>
 </html>
