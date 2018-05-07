@@ -284,7 +284,7 @@
         }
         // 开始请求
         $.ajax({
-            url: "/api/novel/spider/list" + novelCode,
+            url: "/api/novel/spider/list/" + novelCode,
             type: "post",
             dataType: "json",
             success: function (data) {
