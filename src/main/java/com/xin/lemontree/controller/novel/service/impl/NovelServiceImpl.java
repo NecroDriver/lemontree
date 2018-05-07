@@ -2,6 +2,7 @@ package com.xin.lemontree.controller.novel.service.impl;
 
 import com.xin.lemontree.common.base.BaseService;
 import com.xin.lemontree.common.consts.CommonConsts;
+import com.xin.lemontree.common.consts.SysConfig;
 import com.xin.lemontree.controller.novel.service.NovelService;
 import com.xin.lemontree.controller.websocket.TokenWebSocket;
 import com.xin.lemontree.dao.novel.NovelChapterDao;
@@ -11,6 +12,7 @@ import com.xin.lemontree.dao.novel.specification.NovelSpecification;
 import com.xin.lemontree.entity.novel.NovelChapterEntity;
 import com.xin.lemontree.entity.novel.NovelEntity;
 import com.xin.lemontree.tools.convert.ConvertUtils;
+import com.xin.lemontree.tools.cookie.CookieUtils;
 import com.xin.lemontree.tools.jsoup.JsoupUtils;
 import com.xin.lemontree.tools.jsoup.impl.NovelDocumentAnalyzer;
 import com.xin.lemontree.tools.page.Pageable;
@@ -107,11 +109,12 @@ public class NovelServiceImpl extends BaseService implements NovelService {
                 // 获取比例
                 int percent = (i + 1) * 100 / novelChapterEntityList.size();
                 // 发送webSocket消息
-                tokenWebSocket.sendMessageByToken(user.getToken(), percent + "");
+                tokenWebSocket.sendMessageByToken(CookieUtils.getCookieValue(request, SysConfig.COOKIE_NAME), percent + "");
             }
             novelChapterDao.save(novelChapterEntityList);
         } catch (Exception e) {
             e.printStackTrace();
+            Assert.notNull(null, "数据读取失败！");
         }
 
         /*--------------------------------------------- 方法返回 -----------------------------------------------------*/
